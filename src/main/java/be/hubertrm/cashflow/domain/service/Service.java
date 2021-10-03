@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface Service<T> {
 
+    boolean exists(Long id);
+
     List<T> getAll();
 
     T getById(Long id) throws ResourceNotFoundException;
@@ -14,5 +16,5 @@ public interface Service<T> {
 
     void update(Long id, T model) throws ResourceNotFoundException;
 
-    void deleteById(Long id);
+    void deleteById(Long id) throws ResourceNotFoundException;
 }

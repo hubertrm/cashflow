@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -17,7 +18,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Resource
     private TransactionRepository transactionRepository;
 
-    private static final String RECORD_NOT_FOUND_MESSAGE = "Transaction not found for this id :: %s";
+    private static final String TRANSACTION_NOT_FOUND_MESSAGE = "Transaction not found for this id :: %s";
+
+    @Override
+    public boolean exists(Long id) { return transactionRepository.findById(id).isPresent(); }
 
     @Override
     public List<Transaction> getAll() {
@@ -27,7 +31,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction getById(Long id) throws ResourceNotFoundException {
         return transactionRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(RECORD_NOT_FOUND_MESSAGE, id));
+                new ResourceNotFoundException(TRANSACTION_NOT_FOUND_MESSAGE, id));
     }
 
     @Override
@@ -49,14 +53,19 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void update(Long id, Transaction model) throws ResourceNotFoundException {
         Transaction current = transactionRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(RECORD_NOT_FOUND_MESSAGE, id));
+                new ResourceNotFoundException(TRANSACTION_NOT_FOUND_MESSAGE, id));
         transactionRepository.update(current.getId(), model);
         log.debug("Updated transaction with id [{}]", id);
     }
 
     @Override
-    public void deleteById(Long id) {
-        transactionRepository.deleteById(id);
-        log.debug("Deleted transaction with id [{}]", id);
+    public void deleteById(Long id) throws ResourceNotFoundException {
+        Optional<Transaction> optionalEntity = transactionRepository.findById(id);
+        if(optionalEntity.isPresent()) {
+            transactionRepository.deleteById(id);
+            log.debug("Deleted transaction with id [{}]", id);
+        } else {
+            throw new ResourceNotFoundException(TRANSACTION_NOT_FOUND_MESSAGE, id);
+        }
     }
 }

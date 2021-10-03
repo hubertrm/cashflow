@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -17,6 +18,9 @@ public class AccountServiceImpl implements AccountService {
 
     private static final String ACCOUNT_NOT_FOUND_MESSAGE = "Account not found for this id :: %s";
     private static final String ACCOUNT_NOT_FOUND_BY_NAME_MESSAGE = "Account not found for this name :: %s";
+
+    @Override
+    public boolean exists(Long id) { return accountRepository.findById(id).isPresent(); }
 
     @Override
     public List<Account> getAll() {
@@ -48,7 +52,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteById(Long accountId)  {
-        accountRepository.deleteById(accountId);
+    public void deleteById(Long accountId) throws ResourceNotFoundException  {
+        Optional<Account> optionalEntity = accountRepository.findById(accountId);
+        if(optionalEntity.isPresent()) {
+            accountRepository.deleteById(accountId);
+        } else {
+            throw new ResourceNotFoundException(ACCOUNT_NOT_FOUND_MESSAGE, accountId);
+        }
     }
 }

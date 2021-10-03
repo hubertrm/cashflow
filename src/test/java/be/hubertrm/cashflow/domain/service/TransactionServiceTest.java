@@ -31,6 +31,35 @@ class TransactionServiceTest {
     private TransactionRepository repository;
 
     @Nested
+    class existsDesigns {
+        @Test
+        @DisplayName("Test exists Success")
+        void testExists() {
+            Transaction expected = new Transaction(
+                    1L,
+                    LocalDate.of(2021, 12, 31),
+                    1L,
+                    new Category(1L, "name", LocalDate.of(2021, 12, 31)),
+                    new Account(1L, "name", LocalDate.of(2021, 12, 31)),
+                    "description");
+            doReturn(Optional.of(expected)).when(repository).findById(1L);
+
+            boolean actual = service.exists(1L);
+
+            assertThat(actual).isTrue();
+        }
+        @Test
+        @DisplayName("Test exists Failure")
+        void testDoesNotExist() {
+            doReturn(Optional.empty()).when(repository).findById(1L);
+
+            boolean actual = service.exists(1L);
+
+            assertThat(actual).isFalse();
+        }
+    }
+
+    @Nested
     class getByIdDesigns {
         @Test
         @DisplayName("Test getById Success")
@@ -177,7 +206,24 @@ class TransactionServiceTest {
         @Test
         @DisplayName("Test delete Success")
         void testDelete() {
+            Transaction expected = new Transaction(
+                    1L,
+                    LocalDate.of(2021, 12, 31),
+                    1L,
+                    new Category(1L, "name", LocalDate.of(2021, 12, 31)),
+                    new Account(1L, "name", LocalDate.of(2021, 12, 31)),
+                    "description");
+            doReturn(Optional.of(expected)).when(repository).findById(1L);
+
             assertThatNoException().isThrownBy(() -> service.deleteById(1L));
+        }
+
+        @Test
+        @DisplayName("Test delete Failure")
+        void testDeleteFailure() {
+            assertThatThrownBy(() -> service.deleteById(1L))
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessageContaining("1");
         }
     }
 }

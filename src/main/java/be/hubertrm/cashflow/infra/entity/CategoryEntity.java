@@ -1,6 +1,8 @@
 package be.hubertrm.cashflow.infra.entity;
 
+import be.hubertrm.cashflow.domain.model.Category;
 import lombok.*;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,6 +11,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "category")
 public class CategoryEntity {
@@ -22,5 +25,17 @@ public class CategoryEntity {
 
     @Column(name = "creation_date", nullable = false)
     private LocalDate date;
+
+    public static CategoryEntity from(Category category) {
+        return new CategoryEntity(
+                category.getId(),
+                category.getName(),
+                category.getDate()
+        );
+    }
+
+    public Category fromThis() {
+        return new Category(id, name, date);
+    }
 
 }

@@ -1,0 +1,1 @@
+INSERT INTO CATEGORY (name, creation_date) VALUES ('name', TO_DATE('01/01/21','dd/MM/yy'));

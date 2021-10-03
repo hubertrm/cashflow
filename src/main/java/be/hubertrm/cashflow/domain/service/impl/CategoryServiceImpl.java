@@ -1,6 +1,7 @@
 package be.hubertrm.cashflow.domain.service.impl;
 
 import be.hubertrm.cashflow.domain.exception.ResourceNotFoundException;
+import be.hubertrm.cashflow.domain.model.Account;
 import be.hubertrm.cashflow.domain.model.Category;
 import be.hubertrm.cashflow.domain.repository.CategoryRepository;
 import be.hubertrm.cashflow.domain.service.CategoryService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -19,6 +21,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     private static final String CATEGORY_NOT_FOUND_MESSAGE = "Category not found for this id :: %s";
     private static final String CATEGORY_NOT_FOUND_BY_NAME_MESSAGE = "Category not found for this name :: %s";
+
+    @Override
+    public boolean exists(Long id) { return categoryRepository.findById(id).isPresent(); }
 
     @Override
     public List<Category> getAll() {
@@ -50,7 +55,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteById(Long categoryId) {
-        categoryRepository.deleteById(categoryId);
+    public void deleteById(Long categoryId) throws ResourceNotFoundException {
+        Optional<Category> optionalEntity = categoryRepository.findById(categoryId);
+        if(optionalEntity.isPresent()) {
+            categoryRepository.deleteById(categoryId);
+        } else {
+            throw new ResourceNotFoundException(CATEGORY_NOT_FOUND_MESSAGE, categoryId);
+        }
     }
 }

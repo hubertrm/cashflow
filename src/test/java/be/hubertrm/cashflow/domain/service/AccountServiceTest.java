@@ -28,6 +28,29 @@ class AccountServiceTest {
     private AccountRepository repository;
 
     @Nested
+    class existsDesigns {
+        @Test
+        @DisplayName("Test exists Success")
+        void testExists() {
+            Account account = new Account(1L, "name", LocalDate.of(2021, 12, 31));
+            doReturn(Optional.of(account)).when(repository).findById(1L);
+
+            boolean actual = service.exists(1L);
+
+            assertThat(actual).isTrue();
+        }
+        @Test
+        @DisplayName("Test exists Failure")
+        void testDoesNotExist() {
+            doReturn(Optional.empty()).when(repository).findById(1L);
+
+            boolean actual = service.exists(1L);
+
+            assertThat(actual).isFalse();
+        }
+    }
+
+    @Nested
     class getByIdDesigns {
         @Test
         @DisplayName("Test getById Success")
@@ -126,7 +149,18 @@ class AccountServiceTest {
         @Test
         @DisplayName("Test delete Success")
         void testDelete() {
+            Account expected = new Account(1L, "name", LocalDate.of(2021, 12, 31));
+            doReturn(Optional.of(expected)).when(repository).findById(1L);
+
             assertThatNoException().isThrownBy(() -> service.deleteById(1L));
+        }
+
+        @Test
+        @DisplayName("Test delete Failure")
+        void testDeleteFailure() {
+            assertThatThrownBy(() -> service.deleteById(1L))
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessageContaining("1");
         }
     }
 
