@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -26,19 +27,23 @@ public class AccountBusinessManager {
         return sourceMapper.toDto(accountService.getById(id));
     }
 
-    public AccountDto getAccountByName(String name) throws ResourceNotFoundException {
-        return sourceMapper.toDto(accountService.getByName(name));
-    }
-
     public Long createAccount(AccountDto accountDto) {
+        setDateIfNotSpecified(accountDto);
         return accountService.create(sourceMapper.toModel(accountDto));
     }
 
     public void updateAccount(Long id, AccountDto accountDto) throws ResourceNotFoundException {
+        setDateIfNotSpecified(accountDto);
         accountService.update(id, sourceMapper.toModel(accountDto));
     }
     
     public void deleteAccountById(Long id) throws ResourceNotFoundException {
         accountService.deleteById(id);
+    }
+
+    private void setDateIfNotSpecified(AccountDto accountDto) {
+        if(accountDto.getDate() == null) {
+            accountDto.setDate(LocalDate.now());
+        }
     }
 }

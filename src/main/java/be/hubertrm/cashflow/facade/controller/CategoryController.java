@@ -35,7 +35,7 @@ public class CategoryController {
     @PutMapping("/{id}")
     public void updateCategory(@PathVariable(value = "id") Long categoryId, @RequestBody CategoryDto categoryDto)
             throws ResourceNotFoundException {
-        categoryBusinessManager.updateCategory(categoryDto, categoryId);
+        categoryBusinessManager.updateCategory(categoryId, categoryDto);
     }
 
     @DeleteMapping("/{id}")

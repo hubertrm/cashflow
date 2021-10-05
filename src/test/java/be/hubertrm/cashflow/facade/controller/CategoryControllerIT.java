@@ -101,6 +101,22 @@ class CategoryControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
+    void given_entityExists_when_updateOnlyName_then_updateOnlyName() throws Exception {
+        Category current = new Category(null, "name", LocalDate.of(2021, 1, 1));
+        Long id = repository.save(current);
+        CategoryDto updated = new CategoryDto(id, "name updated", null);
+        Category expected = new Category(id, "name updated", LocalDate.of(2021, 1, 1));
+
+        mvc.perform(put(CATEGORIES_PATH + "/" + id)
+                        .content(jsonCategory.write(updated).getJson())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful());
+
+        assertThat(repository.findById(id))
+                .isPresent().contains(expected);
+    }
+
+    @Test
     @Sql("classpath:integrationTest/deleteCategories.sql")
     void given_entityDoesNotExist_when_update_then_NotFound() throws Exception {
         CategoryDto updated = new CategoryDto(1L, "name updated", LocalDate.of(2021, 1, 1));

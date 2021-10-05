@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -26,19 +27,23 @@ public class CategoryBusinessManager {
         return categoryMapper.toDto(categoryService.getById(id));
     }
 
-    public CategoryDto getCategoryByName(String name) throws ResourceNotFoundException {
-        return categoryMapper.toDto(categoryService.getByName(name));
-    }
-
     public Long createCategory(CategoryDto categoryDto) {
+        setDateIfNotSpecified(categoryDto);
         return categoryService.create(categoryMapper.toModel(categoryDto));
     }
 
-    public void updateCategory(CategoryDto categoryDto, Long id) throws ResourceNotFoundException {
+    public void updateCategory(Long id, CategoryDto categoryDto) throws ResourceNotFoundException {
+        setDateIfNotSpecified(categoryDto);
         categoryService.update(id, categoryMapper.toModel(categoryDto));
     }
     
     public void deleteCategoryById(Long id) throws ResourceNotFoundException {
         categoryService.deleteById(id);
+    }
+
+    private void setDateIfNotSpecified(CategoryDto categoryDto) {
+        if(categoryDto.getDate() == null) {
+            categoryDto.setDate(LocalDate.now());
+        }
     }
 }
