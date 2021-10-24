@@ -1,6 +1,6 @@
 package be.hubertrm.cashflow.facade.controller;
 
-import be.hubertrm.cashflow.domain.exception.ResourceNotFoundException;
+import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
 import be.hubertrm.cashflow.facade.dto.CategoryDto;
 import be.hubertrm.cashflow.facade.manager.CategoryBusinessManager;
 import org.springframework.web.bind.annotation.*;

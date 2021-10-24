@@ -1,8 +1,7 @@
 package be.hubertrm.cashflow.infra.entity;
 
-import be.hubertrm.cashflow.domain.model.Category;
+import be.hubertrm.cashflow.domain.core.model.Category;
 import lombok.*;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDate;

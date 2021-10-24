@@ -1,6 +1,6 @@
 package be.hubertrm.cashflow.infra.entity;
 
-import be.hubertrm.cashflow.domain.model.Account;
+import be.hubertrm.cashflow.domain.core.model.Account;
 import lombok.*;
 
 import javax.persistence.*;

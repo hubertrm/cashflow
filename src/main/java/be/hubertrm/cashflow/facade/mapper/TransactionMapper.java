@@ -1,6 +1,6 @@
 package be.hubertrm.cashflow.facade.mapper;
 
-import be.hubertrm.cashflow.domain.model.Transaction;
+import be.hubertrm.cashflow.domain.core.model.Transaction;
 import be.hubertrm.cashflow.facade.dto.TransactionDto;
 import org.mapstruct.Mapper;
 

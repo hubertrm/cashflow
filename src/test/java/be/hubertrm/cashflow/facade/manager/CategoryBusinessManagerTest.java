@@ -1,8 +1,8 @@
 package be.hubertrm.cashflow.facade.manager;
 
-import be.hubertrm.cashflow.domain.exception.ResourceNotFoundException;
-import be.hubertrm.cashflow.domain.model.Category;
-import be.hubertrm.cashflow.domain.service.CategoryService;
+import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
+import be.hubertrm.cashflow.domain.core.model.Category;
+import be.hubertrm.cashflow.domain.core.service.CategoryService;
 import be.hubertrm.cashflow.facade.dto.CategoryDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

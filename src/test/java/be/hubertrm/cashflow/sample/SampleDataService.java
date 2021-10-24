@@ -1,8 +1,8 @@
 package be.hubertrm.cashflow.sample;
 
-import be.hubertrm.cashflow.domain.model.Account;
-import be.hubertrm.cashflow.domain.model.Category;
-import be.hubertrm.cashflow.domain.model.Transaction;
+import be.hubertrm.cashflow.domain.core.model.Account;
+import be.hubertrm.cashflow.domain.core.model.Category;
+import be.hubertrm.cashflow.domain.core.model.Transaction;
 import be.hubertrm.cashflow.facade.dto.AccountDto;
 import be.hubertrm.cashflow.facade.dto.CategoryDto;
 import be.hubertrm.cashflow.facade.dto.TransactionDto;

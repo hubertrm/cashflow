@@ -1,7 +1,7 @@
 package be.hubertrm.cashflow.infra.repository.impl;
 
-import be.hubertrm.cashflow.domain.model.Category;
-import be.hubertrm.cashflow.domain.repository.CategoryRepository;
+import be.hubertrm.cashflow.domain.core.model.Category;
+import be.hubertrm.cashflow.domain.core.repository.CategoryRepository;
 import be.hubertrm.cashflow.infra.entity.CategoryEntity;
 import be.hubertrm.cashflow.infra.repository.JpaCategoryRepository;
 import lombok.extern.slf4j.Slf4j;

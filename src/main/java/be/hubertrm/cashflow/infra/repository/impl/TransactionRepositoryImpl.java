@@ -1,7 +1,7 @@
 package be.hubertrm.cashflow.infra.repository.impl;
 
-import be.hubertrm.cashflow.domain.model.Transaction;
-import be.hubertrm.cashflow.domain.repository.TransactionRepository;
+import be.hubertrm.cashflow.domain.core.model.Transaction;
+import be.hubertrm.cashflow.domain.core.repository.TransactionRepository;
 import be.hubertrm.cashflow.infra.entity.TransactionEntity;
 import be.hubertrm.cashflow.infra.repository.JpaTransactionRepository;
 import lombok.extern.slf4j.Slf4j;

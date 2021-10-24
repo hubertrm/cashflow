@@ -1,7 +1,7 @@
 package be.hubertrm.cashflow.infra.repository.impl;
 
-import be.hubertrm.cashflow.domain.model.Account;
-import be.hubertrm.cashflow.domain.repository.AccountRepository;
+import be.hubertrm.cashflow.domain.core.model.Account;
+import be.hubertrm.cashflow.domain.core.repository.AccountRepository;
 import be.hubertrm.cashflow.infra.entity.AccountEntity;
 import be.hubertrm.cashflow.infra.repository.JpaAccountRepository;
 import lombok.extern.slf4j.Slf4j;

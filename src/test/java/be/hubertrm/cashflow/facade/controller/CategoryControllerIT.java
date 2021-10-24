@@ -1,8 +1,8 @@
 package be.hubertrm.cashflow.facade.controller;
 
 import be.hubertrm.cashflow.CashflowBaseIntegrationTest;
-import be.hubertrm.cashflow.domain.model.Category;
-import be.hubertrm.cashflow.domain.repository.CategoryRepository;
+import be.hubertrm.cashflow.domain.core.model.Category;
+import be.hubertrm.cashflow.domain.core.repository.CategoryRepository;
 import be.hubertrm.cashflow.facade.dto.CategoryDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

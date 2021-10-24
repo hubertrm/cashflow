@@ -1,11 +1,11 @@
 package be.hubertrm.cashflow.facade.manager;
 
-import be.hubertrm.cashflow.domain.exception.ResourceNotFoundException;
-import be.hubertrm.cashflow.domain.service.AccountService;
-import be.hubertrm.cashflow.domain.service.CategoryService;
-import be.hubertrm.cashflow.domain.service.TransactionService;
+import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
+import be.hubertrm.cashflow.domain.core.service.AccountService;
+import be.hubertrm.cashflow.domain.core.service.CategoryService;
+import be.hubertrm.cashflow.domain.core.service.TransactionService;
 import be.hubertrm.cashflow.facade.dto.TransactionDto;
-import be.hubertrm.cashflow.facade.file.reader.CsvReader;
+import be.hubertrm.cashflow.domain.file.reader.CsvReader;
 import be.hubertrm.cashflow.facade.mapper.TransactionMapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;

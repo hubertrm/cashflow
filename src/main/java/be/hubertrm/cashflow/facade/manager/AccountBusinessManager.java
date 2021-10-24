@@ -1,7 +1,7 @@
 package be.hubertrm.cashflow.facade.manager;
 
-import be.hubertrm.cashflow.domain.exception.ResourceNotFoundException;
-import be.hubertrm.cashflow.domain.service.AccountService;
+import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
+import be.hubertrm.cashflow.domain.core.service.AccountService;
 import be.hubertrm.cashflow.facade.dto.AccountDto;
 import be.hubertrm.cashflow.facade.mapper.AccountMapper;
 import org.mapstruct.factory.Mappers;
