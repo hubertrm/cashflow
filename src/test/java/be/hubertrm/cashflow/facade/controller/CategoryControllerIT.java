@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CategoryControllerIT extends CashflowBaseIntegrationTest {
 
     public static final String CATEGORIES_PATH = API_PATH + "/categories";
@@ -31,7 +33,6 @@ class CategoryControllerIT extends CashflowBaseIntegrationTest {
     private CategoryRepository repository;
 
     @Test
-    @Sql("classpath:integrationTest/deleteCategories.sql")
     void given_noEntityExists_when_getAll_then_emptyList() throws Exception {
         mvc.perform(get(CATEGORIES_PATH))
                 .andExpect(status().is2xxSuccessful())
@@ -54,9 +55,9 @@ class CategoryControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
+    @Sql("classpath:integrationTest/createCategory.sql")
     void given_entityExists_when_getById_then_returnsEntity() throws Exception {
-        Category current = new Category(null, "name", LocalDate.of(2021, 1, 1));
-        Long id = repository.save(current);
+        Long id = 1L;
         CategoryDto expected = new CategoryDto(id, "name", LocalDate.of(2021, 1, 1));
 
         mvc.perform(get(CATEGORIES_PATH + "/" + id))
@@ -66,7 +67,6 @@ class CategoryControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
-    @Sql("classpath:integrationTest/deleteCategories.sql")
     void given_entityDoesNotExist_when_getById_then_NotFound() throws Exception {
         mvc.perform(get(CATEGORIES_PATH + "/" + 1L))
                 .andExpect(status().is4xxClientError());
@@ -85,9 +85,9 @@ class CategoryControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
+    @Sql("classpath:integrationTest/createCategory.sql")
     void given_entityExists_when_update_then_update() throws Exception {
-        Category current = new Category(null, "name", LocalDate.of(2021, 1, 1));
-        Long id = repository.save(current);
+        Long id = 1L;
         CategoryDto updated = new CategoryDto(id, "name updated", LocalDate.of(2021, 1, 1));
         Category expected = new Category(id, "name updated", LocalDate.of(2021, 1, 1));
 
@@ -101,10 +101,10 @@ class CategoryControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
+    @Sql("classpath:integrationTest/createCategory.sql")
     void given_entityExists_when_updateOnlyName_then_updateOnlyName() throws Exception {
-        Category current = new Category(null, "name", LocalDate.of(2021, 1, 1));
-        Long id = repository.save(current);
-        CategoryDto updated = new CategoryDto(id, "name updated", null);
+        Long id = 1L;
+        CategoryDto updated = new CategoryDto(id, "name updated", LocalDate.of(2021, 1, 1));
         Category expected = new Category(id, "name updated", LocalDate.of(2021, 1, 1));
 
         mvc.perform(put(CATEGORIES_PATH + "/" + id)
@@ -117,7 +117,6 @@ class CategoryControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
-    @Sql("classpath:integrationTest/deleteCategories.sql")
     void given_entityDoesNotExist_when_update_then_NotFound() throws Exception {
         CategoryDto updated = new CategoryDto(1L, "name updated", LocalDate.of(2021, 1, 1));
 
@@ -130,9 +129,9 @@ class CategoryControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
+    @Sql("classpath:integrationTest/createCategory.sql")
     void given_entityExists_when_deleted_then_doesNoLongerExist() throws Exception {
-        Category current = new Category(null, "name", LocalDate.of(2021, 1, 1));
-        Long id = repository.save(current);
+        Long id = 1L;
         mvc.perform(delete(CATEGORIES_PATH + "/" + id))
                 .andExpect(status().is2xxSuccessful());
 

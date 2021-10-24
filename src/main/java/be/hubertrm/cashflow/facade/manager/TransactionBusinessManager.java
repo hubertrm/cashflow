@@ -5,12 +5,14 @@ import be.hubertrm.cashflow.domain.service.AccountService;
 import be.hubertrm.cashflow.domain.service.CategoryService;
 import be.hubertrm.cashflow.domain.service.TransactionService;
 import be.hubertrm.cashflow.facade.dto.TransactionDto;
+import be.hubertrm.cashflow.facade.file.reader.CsvReader;
 import be.hubertrm.cashflow.facade.mapper.TransactionMapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class TransactionBusinessManager {
@@ -21,6 +23,8 @@ public class TransactionBusinessManager {
     private CategoryService categoryService;
     @Resource
     private AccountService accountService;
+    @Resource
+    private CsvReader csvReader;
 
     private final TransactionMapper transactionMapper = Mappers.getMapper(TransactionMapper.class);
 
@@ -37,16 +41,24 @@ public class TransactionBusinessManager {
         return transactionService.create(transactionMapper.toModel(dto));
     }
 
-    public List<Long> create(List<TransactionDto> dtoList) {
+    public List<Long> create(List<TransactionDto> dtoList) throws ResourceNotFoundException {
+        for (TransactionDto transactionDto : dtoList) {
+            assertCategoryAndAccountExists(transactionDto);
+        }
         return transactionService.create(transactionMapper.toModelList(dtoList));
     }
 
     public void update(Long id, TransactionDto dto) throws ResourceNotFoundException {
+        assertCategoryAndAccountExists(dto);
         transactionService.update(id, transactionMapper.toModel(dto));
     }
 
     public void deleteById(Long id) throws ResourceNotFoundException {
         transactionService.deleteById(id);
+    }
+
+    public List<TransactionDto> evaluateFileWithHeaders(String headers, String file) {
+        return csvReader.read(headers, file, Locale.ROOT);
     }
 
     private void assertCategoryAndAccountExists(TransactionDto dto) throws ResourceNotFoundException {

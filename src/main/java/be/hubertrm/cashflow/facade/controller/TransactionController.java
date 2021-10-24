@@ -36,7 +36,7 @@ public class TransactionController {
     }
 
     @PostMapping("/bulk")
-    public List<Long> createBulkTransactions(@RequestBody List<TransactionDto> transactionDtoList) {
+    public List<Long> createBulkTransactions(@RequestBody List<TransactionDto> transactionDtoList) throws ResourceNotFoundException {
         return transactionBusinessManager.create(transactionDtoList);
     }
 
@@ -49,5 +49,17 @@ public class TransactionController {
     @DeleteMapping("/{id}")
     public void deleteTransactionById(@PathVariable(value = "id") Long transactionId) throws ResourceNotFoundException {
         transactionBusinessManager.deleteById(transactionId);
+    }
+
+    @PostMapping(value = "/evaluate")
+    public List<TransactionDto> evaluateFile(@RequestParam String headers, @RequestParam String file) {
+        /*return List.of(new TransactionDto(
+                1L,
+                LocalDate.of(2021, 12, 31),
+                1L,
+                new CategoryDto(1L, "name", LocalDate.of(2021, 1, 1)),
+                new AccountDto(1L, "name", LocalDate.of(2021, 1, 1)),
+                "description"));*/
+        return transactionBusinessManager.evaluateFileWithHeaders(headers, file);
     }
 }

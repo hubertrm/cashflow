@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class AccountControllerIT extends CashflowBaseIntegrationTest {
 
     public static final String ACCOUNTS_PATH = API_PATH + "/accounts";
@@ -31,7 +33,6 @@ class AccountControllerIT extends CashflowBaseIntegrationTest {
     private AccountRepository repository;
 
     @Test
-    @Sql("classpath:integrationTest/deleteAccounts.sql")
     void given_noEntityExists_when_getAll_then_emptyList() throws Exception {
         mvc.perform(get(ACCOUNTS_PATH))
                 .andExpect(status().is2xxSuccessful())
@@ -54,9 +55,9 @@ class AccountControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
+    @Sql("classpath:integrationTest/createAccount.sql")
     void given_entityExists_when_getById_then_returnsEntity() throws Exception {
-        Account current = new Account(null, "name", LocalDate.of(2021, 1, 1));
-        Long id = repository.save(current);
+        Long id = 1L;
         AccountDto expected = new AccountDto(id, "name", LocalDate.of(2021, 1, 1));
 
         mvc.perform(get(ACCOUNTS_PATH + "/" + id))
@@ -66,7 +67,6 @@ class AccountControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
-    @Sql("classpath:integrationTest/deleteAccounts.sql")
     void given_entityDoesNotExist_when_getById_then_NotFound() throws Exception {
         mvc.perform(get(ACCOUNTS_PATH + "/" + 1L))
                 .andExpect(status().is4xxClientError());
@@ -85,9 +85,9 @@ class AccountControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
+    @Sql("classpath:integrationTest/createAccount.sql")
     void given_entityExists_when_update_then_update() throws Exception {
-        Account current = new Account(null, "name", LocalDate.of(2021, 1, 1));
-        Long id = repository.save(current);
+        Long id = 1L;
         AccountDto updated = new AccountDto(id, "name updated", LocalDate.of(2021, 1, 1));
         Account expected = new Account(id, "name updated", LocalDate.of(2021, 1, 1));
 
@@ -101,7 +101,6 @@ class AccountControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
-    @Sql("classpath:integrationTest/deleteAccounts.sql")
     void given_entityDoesNotExist_when_update_then_NotFound() throws Exception {
         AccountDto updated = new AccountDto(1L, "name updated", LocalDate.of(2021, 1, 1));
 
@@ -114,9 +113,9 @@ class AccountControllerIT extends CashflowBaseIntegrationTest {
     }
 
     @Test
+    @Sql("classpath:integrationTest/createAccount.sql")
     void given_entityExists_when_deleted_then_doesNoLongerExist() throws Exception {
-        Account current = new Account(null, "name", LocalDate.of(2021, 1, 1));
-        Long id = repository.save(current);
+        Long id = 1L;
         mvc.perform(delete(ACCOUNTS_PATH + "/" + id))
                 .andExpect(status().is2xxSuccessful());
 
