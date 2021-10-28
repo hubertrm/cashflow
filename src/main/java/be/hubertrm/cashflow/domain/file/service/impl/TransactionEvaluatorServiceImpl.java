@@ -110,7 +110,7 @@ public class TransactionEvaluatorServiceImpl implements TransactionEvaluatorServ
     }
 
     private Float mapAmount(String amount) {
-        var amountPattern = "^\\s*(\\d+(,\\d+)?)\\s*€";
+        var amountPattern = "^\\s*([+-]?\\d+(,\\d+)?)\\s*€?";
         var pattern = Pattern.compile(amountPattern);
         var matcher = pattern.matcher(amount);
         return matcher.find() ? Float.parseFloat(matcher.group(1).replace(',', '.')) : 0.0f;

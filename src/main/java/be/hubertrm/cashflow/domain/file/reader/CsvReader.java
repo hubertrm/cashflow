@@ -43,7 +43,7 @@ public class CsvReader {
 
     private String[] getHeaders(String content) {
         Converter<String, ? extends List<String>> converter = converterFactory.createConverter(OutputType.ARRAY);
-        return converter.convert(content.toLowerCase()).toArray(new String[]{});
+        return converter.convert(content.toLowerCase().trim()).toArray(new String[]{});
     }
 
     private void extractFromStringToList(String content, List<TransactionDto> recordDtoList, String[] headers, Locale locale) {

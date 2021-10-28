@@ -33,23 +33,23 @@ public class StringArrayConverter implements Converter<String, ArrayList<String>
     private ArrayList<String> split(String rec) {
         ArrayList<String> results = new ArrayList<>();
         if (!StringUtils.hasText(DELIMITER) || !StringUtils.hasText(rec)) {
-            results.add(rec);
+            results.add(rec.strip());
             return results;
         }
         if (!rec.contains(MARKER)) {
-            results.addAll(Arrays.stream(rec.split(DELIMITER)).collect(Collectors.toList()));
+            results.addAll(Arrays.stream(rec.split(DELIMITER)).map(String::strip).collect(Collectors.toList()));
             return results;
         } else {
             String remaining = rec;
             while(StringUtils.hasText(remaining)) {
                 String[] parts = splitToThree(remaining);
                 results.addAll(Arrays.stream(parts[0].split(DELIMITER))
-                        .filter(s -> !s.isBlank()).collect(Collectors.toList()));
+                        .filter(s -> !s.isBlank()).map(String::strip).collect(Collectors.toList()));
                 if(parts.length > 2) {
-                    results.add(parts[1]);
+                    results.add(parts[1].strip());
                     remaining = parts[2];
                 } else if(parts.length > 1) {
-                    results.add(parts[1]);
+                    results.add(parts[1].strip());
                     remaining = "";
                 } else {
                     remaining = "";
