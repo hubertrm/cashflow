@@ -8,7 +8,7 @@ import be.hubertrm.cashflow.domain.core.service.CategoryService;
 import be.hubertrm.cashflow.domain.file.model.Evaluation;
 import be.hubertrm.cashflow.domain.file.model.RecordEvaluated;
 import be.hubertrm.cashflow.domain.file.service.impl.EvaluatorServiceImpl;
-import be.hubertrm.cashflow.facade.dto.TransactionDto;
+import be.hubertrm.cashflow.application.dto.TransactionDto;
 import be.hubertrm.cashflow.sample.SampleDataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -3,9 +3,9 @@ package be.hubertrm.cashflow.sample;
 import be.hubertrm.cashflow.domain.core.model.Account;
 import be.hubertrm.cashflow.domain.core.model.Category;
 import be.hubertrm.cashflow.domain.core.model.Transaction;
-import be.hubertrm.cashflow.facade.dto.AccountDto;
-import be.hubertrm.cashflow.facade.dto.CategoryDto;
-import be.hubertrm.cashflow.facade.dto.TransactionDto;
+import be.hubertrm.cashflow.application.dto.AccountDto;
+import be.hubertrm.cashflow.application.dto.CategoryDto;
+import be.hubertrm.cashflow.application.dto.TransactionDto;
 
 import java.time.LocalDate;
 import java.util.Arrays;

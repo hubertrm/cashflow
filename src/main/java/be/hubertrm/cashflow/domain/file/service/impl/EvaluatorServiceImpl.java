@@ -3,7 +3,7 @@ package be.hubertrm.cashflow.domain.file.service.impl;
 import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
 import be.hubertrm.cashflow.domain.core.service.AccountService;
 import be.hubertrm.cashflow.domain.core.service.CategoryService;
-import be.hubertrm.cashflow.domain.file.converter.Converter;
+import be.hubertrm.cashflow.domain.file.service.converter.Converter;
 import be.hubertrm.cashflow.domain.file.enums.DatePattern;
 import be.hubertrm.cashflow.domain.file.model.Error;
 import be.hubertrm.cashflow.domain.file.model.Evaluation;
