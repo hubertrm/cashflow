@@ -5,7 +5,9 @@ import be.hubertrm.cashflow.domain.core.model.Account;
 import be.hubertrm.cashflow.domain.core.model.Category;
 import be.hubertrm.cashflow.domain.core.service.AccountService;
 import be.hubertrm.cashflow.domain.core.service.CategoryService;
-import be.hubertrm.cashflow.domain.file.service.impl.TransactionEvaluatorServiceImpl;
+import be.hubertrm.cashflow.domain.file.model.Evaluation;
+import be.hubertrm.cashflow.domain.file.model.RecordEvaluated;
+import be.hubertrm.cashflow.domain.file.service.impl.EvaluatorServiceImpl;
 import be.hubertrm.cashflow.facade.dto.TransactionDto;
 import be.hubertrm.cashflow.sample.SampleDataService;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
-class TransactionEvaluatorServiceTest {
+class EvaluatorServiceTest {
 
     @MockBean
     private CategoryService categoryService;
@@ -31,7 +33,7 @@ class TransactionEvaluatorServiceTest {
 
     @InjectMocks
     @Autowired
-    private TransactionEvaluatorServiceImpl evaluatorService;
+    private EvaluatorServiceImpl evaluatorService;
 
     @BeforeEach
     void setup() throws ResourceNotFoundException {
@@ -45,11 +47,11 @@ class TransactionEvaluatorServiceTest {
     void shouldUseDefaultLocale() {
         String[] fields = {"date", "price", "category", "account", "description"};
         String testLine = "01-09-2021,\"1,0 €\",test,test,test";
-        TransactionDto expected = SampleDataService.createTransactionDto()
+        RecordEvaluated expected = fromTransactionDto(SampleDataService.createTransactionDto()
                 .setId(null)
-                .setDate(LocalDate.of(2021, 9, 1));
+                .setDate(LocalDate.of(2021, 9, 1)));
 
-        TransactionDto actual = evaluatorService.create(fields, testLine);
+        RecordEvaluated actual = evaluatorService.create(fields, testLine);
 
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -58,11 +60,11 @@ class TransactionEvaluatorServiceTest {
     void shouldRespectSelectedLocale() {
         String[] fieldsFr = {"date", "montant", "catégorie", "compte", "commentaire"};
         String testLine = "01-09-2021,\"1,0 €\",test,test,test";
-        TransactionDto expected = SampleDataService.createTransactionDto()
+        RecordEvaluated expected = fromTransactionDto(SampleDataService.createTransactionDto()
                 .setId(null)
-                .setDate(LocalDate.of(2021, 9, 1));
+                .setDate(LocalDate.of(2021, 9, 1)));
 
-        TransactionDto actual = evaluatorService.create(fieldsFr, testLine, Locale.FRANCE);
+        RecordEvaluated actual = evaluatorService.create(fieldsFr, testLine, Locale.FRANCE);
 
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -71,11 +73,11 @@ class TransactionEvaluatorServiceTest {
     void shouldMatchFieldsOrder() {
         String[] fields = {"description", "account", "category", "price", "date"};
         String testLine = "test,test,test,\"1,0 €\",01-09-2021";
-        TransactionDto expected = SampleDataService.createTransactionDto()
+        RecordEvaluated expected = fromTransactionDto(SampleDataService.createTransactionDto()
                 .setId(null)
-                .setDate(LocalDate.of(2021, 9, 1));
+                .setDate(LocalDate.of(2021, 9, 1)));
 
-        TransactionDto actual = evaluatorService.create(fields, testLine);
+        RecordEvaluated actual = evaluatorService.create(fields, testLine);
 
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -84,11 +86,11 @@ class TransactionEvaluatorServiceTest {
     void shouldIgnoreUnsupportedFields() {
         String[] fields = {"date", "price", "unsupported_1", "category", "account", "description", "unsupported_2"};
         String testLine = "01-09-2021,\"1,0 €\",unsupported_1,test,test,test,unsupported_2";
-        TransactionDto expected = SampleDataService.createTransactionDto()
+        RecordEvaluated expected = fromTransactionDto(SampleDataService.createTransactionDto()
                 .setId(null)
-                .setDate(LocalDate.of(2021, 9, 1));
+                .setDate(LocalDate.of(2021, 9, 1)));
 
-        TransactionDto actual = evaluatorService.create(fields, testLine);
+        RecordEvaluated actual = evaluatorService.create(fields, testLine);
 
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -97,10 +99,19 @@ class TransactionEvaluatorServiceTest {
     void whenSelectedLocaleAndFieldsNameAreNotSupported_shouldReturnEmpty() {
         String[] fieldsIt = {"data", "importo", "categoria", "conto", "commento"};
         String testLine = "test,test,test,test,test";
-        TransactionDto expected = new TransactionDto();
+        RecordEvaluated expected = new RecordEvaluated();
 
-        TransactionDto actual = evaluatorService.create(fieldsIt, testLine, Locale.ITALY);
+        RecordEvaluated actual = evaluatorService.create(fieldsIt, testLine, Locale.ITALY);
 
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    }
+
+    private RecordEvaluated fromTransactionDto(TransactionDto transactionDto) {
+        return new RecordEvaluated()
+                .setDate(new Evaluation().setValue(transactionDto.getDate().toString()))
+                .setAmount(new Evaluation().setValue(String.valueOf(transactionDto.getAmount())))
+                .setCategory(new Evaluation().setValue(String.valueOf(transactionDto.getCategory().getName())))
+                .setAccount(new Evaluation().setValue(String.valueOf(transactionDto.getAccount().getName())))
+                .setDescription(new Evaluation().setValue(String.valueOf(transactionDto.getDescription())));
     }
 }

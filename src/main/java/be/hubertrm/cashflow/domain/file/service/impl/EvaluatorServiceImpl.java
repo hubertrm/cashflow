@@ -4,31 +4,29 @@ import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
 import be.hubertrm.cashflow.domain.core.service.AccountService;
 import be.hubertrm.cashflow.domain.core.service.CategoryService;
 import be.hubertrm.cashflow.domain.file.converter.Converter;
-import be.hubertrm.cashflow.domain.file.service.TransactionEvaluatorService;
-import be.hubertrm.cashflow.facade.dto.AccountDto;
-import be.hubertrm.cashflow.facade.dto.CategoryDto;
-import be.hubertrm.cashflow.facade.dto.TransactionDto;
 import be.hubertrm.cashflow.domain.file.enums.DatePattern;
+import be.hubertrm.cashflow.domain.file.model.Error;
+import be.hubertrm.cashflow.domain.file.model.Evaluation;
+import be.hubertrm.cashflow.domain.file.model.RecordEvaluated;
 import be.hubertrm.cashflow.domain.file.model.RecordField;
-import be.hubertrm.cashflow.facade.mapper.AccountMapper;
-import be.hubertrm.cashflow.facade.mapper.CategoryMapper;
+import be.hubertrm.cashflow.domain.file.service.EvaluatorService;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static be.hubertrm.cashflow.domain.file.enums.ErrorType.*;
+
 @Slf4j
 @Service
-public class TransactionEvaluatorServiceImpl implements TransactionEvaluatorService {
+public class EvaluatorServiceImpl implements EvaluatorService {
 
-    public final CategoryMapper categoryMapper = Mappers.getMapper(CategoryMapper.class);
-    public final AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
     private DateTimeFormatter dateTimeFormatter;
 
     @Resource
@@ -40,43 +38,43 @@ public class TransactionEvaluatorServiceImpl implements TransactionEvaluatorServ
     Converter<String, List<String>> converter;
 
     @Override
-    public TransactionDto create(String[] fields, String line) {
+    public RecordEvaluated create(String[] fields, String line) {
         return this.create(fields, line, Locale.ROOT);
     }
 
     @Override
-    public TransactionDto create(String[] fields, String line, Locale locale) {
-        var transactionDto = new TransactionDto();
+    public RecordEvaluated create(String[] fields, String line, Locale locale) {
+        var recordEvaluated = new RecordEvaluated();
         try {
             List<String> elements = converter.convert(line);
             Map<String, RecordField> fieldsMap = getValueRecordFieldMap(locale);
             for (var i = 0; i < fields.length; i++) {
                 switch (fieldsMap.getOrDefault(fields[i], RecordField.NOT_SUPPORTED)) {
                     case DATE:
-                        transactionDto.setDate(mapDate(elements.get(i)));
+                        recordEvaluated.setDate(mapDate(elements.get(i)));
                         break;
                     case PRICE:
-                        transactionDto.setAmount(mapAmount(elements.get(i)));
+                        recordEvaluated.setAmount(mapPrice(elements.get(i)));
                         break;
                     case CATEGORY:
-                        transactionDto.setCategory(mapCategory(elements.get(i)));
+                        recordEvaluated.setCategory(mapCategory(elements.get(i)));
                         break;
                     case ACCOUNT:
-                        transactionDto.setAccount(mapAccount(elements.get(i)));
+                        recordEvaluated.setAccount(mapAccount(elements.get(i)));
                         break;
                     case DESCRIPTION:
-                        transactionDto.setDescription(elements.get(i));
+                        recordEvaluated.setDescription(mapDescription(elements.get(i)));
                         break;
                     case NOT_SUPPORTED:
                     default:
                         log.debug("Field \"{}\" is not supported (element: {}, value: {})", fields[i], i, elements.get(i));
                 }
             }
-        } catch (ResourceNotFoundException e) {
+        } catch (Exception e) {
             log.debug("Could not create Record from line {}.", line, e);
             return null;
         }
-        return transactionDto;
+        return recordEvaluated;
     }
 
     public void setDateTimeFormatter(String pattern) {
@@ -96,12 +94,20 @@ public class TransactionEvaluatorServiceImpl implements TransactionEvaluatorServ
                 .orElse(RecordField.NOT_SUPPORTED);
     }
 
-    private LocalDate mapDate(String date) {
-        if (dateTimeFormatter != null) {
-            return date != null ? LocalDate.parse(date, dateTimeFormatter) : null;
+    private Evaluation mapDate(String date) {
+        Evaluation evaluation = new Evaluation().setValue(date);
+        try {
+            if (dateTimeFormatter == null) {
+                dateTimeFormatter = DateTimeFormatter.ofPattern(getDatePattern(DatePattern.DEFAULT_DATE_PATTERN));
+            }
+            return evaluation.setValue(LocalDate.parse(date, dateTimeFormatter).toString());
+        } catch (DateTimeParseException e) {
+            Error error = new Error(WRONG_FORMAT, "The date format is wrong. Accepted date format is: " + dateTimeFormatter);
+            return evaluation.setError(error);
+        } catch (NullPointerException e) {
+            Error error = new Error(MISSING_VALUE, "The date is missing.");
+            return evaluation.setError(error);
         }
-        var datePattern = DatePattern.DEFAULT_DATE_PATTERN;
-        return date != null ? LocalDate.parse(date, DateTimeFormatter.ofPattern(getDatePattern(datePattern)))  : null;
     }
 
     private static String getDatePattern(DatePattern datePattern) {
@@ -109,18 +115,36 @@ public class TransactionEvaluatorServiceImpl implements TransactionEvaluatorServ
         return resources.getString(datePattern.getValue());
     }
 
-    private Float mapAmount(String amount) {
+    private Evaluation mapPrice(String amount) {
         var amountPattern = "^\\s*([+-]?\\d+(,\\d+)?)\\s*€?";
         var pattern = Pattern.compile(amountPattern);
         var matcher = pattern.matcher(amount);
-        return matcher.find() ? Float.parseFloat(matcher.group(1).replace(',', '.')) : 0.0f;
+        if (matcher.find()) {
+            return new Evaluation().setValue((matcher.group(1).replace(',', '.')));
+        }
+        Error error = new Error(WRONG_FORMAT, "The price format is wrong.");
+        return new Evaluation().setValue(amount).setError(error);
     }
 
-    private CategoryDto mapCategory(String categoryName) throws ResourceNotFoundException {
-        return categoryMapper.toDto(categoryService.getByName(categoryName));
+    private Evaluation mapCategory(String categoryName) {
+        try {
+            return new Evaluation().setValue(categoryService.getByName(categoryName).getName());
+        } catch (ResourceNotFoundException e) {
+            Error error = new Error(FIELD_DOES_NOT_EXIST, "This field does not exists");
+            return new Evaluation().setValue(categoryName).setError(error);
+        }
     }
 
-    private AccountDto mapAccount(String sourceName) throws ResourceNotFoundException {
-        return accountMapper.toDto(accountService.getByName(sourceName));
+    private Evaluation mapAccount(String sourceName) {
+        try {
+            return new Evaluation().setValue(accountService.getByName(sourceName).getName());
+        } catch (ResourceNotFoundException e) {
+            Error error = new Error(FIELD_DOES_NOT_EXIST, "This field does not exists");
+            return new Evaluation().setValue(sourceName).setError(error);
+        }
+    }
+
+    private Evaluation mapDescription(String description) {
+        return new Evaluation().setValue(description);
     }
 }

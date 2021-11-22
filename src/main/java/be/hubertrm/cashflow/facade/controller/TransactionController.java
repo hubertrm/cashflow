@@ -1,6 +1,7 @@
 package be.hubertrm.cashflow.facade.controller;
 
 import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
+import be.hubertrm.cashflow.facade.dto.RecordEvaluatedDto;
 import be.hubertrm.cashflow.facade.dto.TransactionDto;
 import be.hubertrm.cashflow.facade.manager.TransactionBusinessManager;
 import org.springframework.http.HttpStatus;
@@ -52,14 +53,7 @@ public class TransactionController {
     }
 
     @PostMapping(value = "/evaluate")
-    public List<TransactionDto> evaluateFile(@RequestParam String headers, @RequestParam String file) {
-        /*return List.of(new TransactionDto(
-                1L,
-                LocalDate.of(2021, 12, 31),
-                1L,
-                new CategoryDto(1L, "name", LocalDate.of(2021, 1, 1)),
-                new AccountDto(1L, "name", LocalDate.of(2021, 1, 1)),
-                "description"));*/
+    public List<RecordEvaluatedDto> evaluateFile(@RequestParam String headers, @RequestParam String file) {
         return transactionBusinessManager.evaluateFileWithHeaders(headers, file);
     }
 }

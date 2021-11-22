@@ -2,10 +2,10 @@ package be.hubertrm.cashflow.domain.file.reader;
 
 import be.hubertrm.cashflow.domain.file.converter.Converter;
 import be.hubertrm.cashflow.domain.file.converter.enums.OutputType;
-import be.hubertrm.cashflow.facade.dto.TransactionDto;
 import be.hubertrm.cashflow.domain.file.enums.FileType;
 import be.hubertrm.cashflow.domain.file.factory.ConverterFactory;
-import be.hubertrm.cashflow.domain.file.service.TransactionEvaluatorService;
+import be.hubertrm.cashflow.domain.file.model.RecordEvaluated;
+import be.hubertrm.cashflow.domain.file.service.EvaluatorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class CsvReader {
 
     @Resource
-    private TransactionEvaluatorService service;
+    private EvaluatorService service;
     @Resource
     private ConverterFactory converterFactory;
 
@@ -28,17 +28,17 @@ public class CsvReader {
         return fileType;
     }
 
-    public List<TransactionDto> read(String headers, String records) {
+    public List<RecordEvaluated> read(String headers, String records) {
         return read(headers, records, Locale.ROOT);
     }
 
-    public List<TransactionDto> read(String headers, String records, Locale locale) {
-        List<TransactionDto> recordDtoList = new ArrayList<>();
+    public List<RecordEvaluated> read(String headers, String records, Locale locale) {
+        List<RecordEvaluated> recordEvaluatedList = new ArrayList<>();
         String[] headerArray = getHeaders(headers);
         log.debug("First Line: {}", Arrays.toString(headerArray));
-        extractFromStringToList(records, recordDtoList, headerArray, locale);
-        recordDtoList.forEach(transactionDto -> log.info("Record {}", transactionDto));
-        return recordDtoList;
+        extractFromStringToList(records, recordEvaluatedList, headerArray, locale);
+        recordEvaluatedList.forEach(recordEvaluated -> log.info("Record {}", recordEvaluated));
+        return recordEvaluatedList;
     }
 
     private String[] getHeaders(String content) {
@@ -46,7 +46,7 @@ public class CsvReader {
         return converter.convert(content.toLowerCase().trim()).toArray(new String[]{});
     }
 
-    private void extractFromStringToList(String content, List<TransactionDto> recordDtoList, String[] headers, Locale locale) {
+    private void extractFromStringToList(String content, List<RecordEvaluated> recordDtoList, String[] headers, Locale locale) {
         recordDtoList.addAll(Arrays.stream(content.split("\n"))
             .filter(this::filterLine)
             .map(line -> service.create(headers, line, locale))

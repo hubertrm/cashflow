@@ -4,8 +4,10 @@ import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
 import be.hubertrm.cashflow.domain.core.service.AccountService;
 import be.hubertrm.cashflow.domain.core.service.CategoryService;
 import be.hubertrm.cashflow.domain.core.service.TransactionService;
-import be.hubertrm.cashflow.facade.dto.TransactionDto;
 import be.hubertrm.cashflow.domain.file.reader.CsvReader;
+import be.hubertrm.cashflow.facade.dto.RecordEvaluatedDto;
+import be.hubertrm.cashflow.facade.dto.TransactionDto;
+import be.hubertrm.cashflow.facade.mapper.RecordEvaluatedMapper;
 import be.hubertrm.cashflow.facade.mapper.TransactionMapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,7 @@ public class TransactionBusinessManager {
     private CsvReader csvReader;
 
     private final TransactionMapper transactionMapper = Mappers.getMapper(TransactionMapper.class);
+    private final RecordEvaluatedMapper recordEvaluatedMapper = Mappers.getMapper(RecordEvaluatedMapper.class);
 
     public List<TransactionDto> getAll() {
         return transactionMapper.toDtoList(transactionService.getAll());
@@ -57,8 +60,8 @@ public class TransactionBusinessManager {
         transactionService.deleteById(id);
     }
 
-    public List<TransactionDto> evaluateFileWithHeaders(String headers, String file) {
-        return csvReader.read(headers, file, Locale.ROOT);
+    public List<RecordEvaluatedDto> evaluateFileWithHeaders(String headers, String file) {
+        return recordEvaluatedMapper.toDtoList(csvReader.read(headers, file, Locale.ROOT));
     }
 
     private void assertCategoryAndAccountExists(TransactionDto dto) throws ResourceNotFoundException {

@@ -3,11 +3,11 @@ package be.hubertrm.cashflow.domain.file.reader;
 import be.hubertrm.cashflow.domain.file.converter.Converter;
 import be.hubertrm.cashflow.domain.file.converter.enums.OutputType;
 import be.hubertrm.cashflow.domain.file.enums.FileType;
-import be.hubertrm.cashflow.domain.file.factory.ConverterFactory;
-import be.hubertrm.cashflow.domain.file.service.TransactionEvaluatorService;
-import be.hubertrm.cashflow.facade.dto.TransactionDto;
 import be.hubertrm.cashflow.domain.file.exception.FieldsNotFoundException;
 import be.hubertrm.cashflow.domain.file.exception.FileNotFoundException;
+import be.hubertrm.cashflow.domain.file.factory.ConverterFactory;
+import be.hubertrm.cashflow.domain.file.model.RecordEvaluated;
+import be.hubertrm.cashflow.domain.file.service.EvaluatorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 public class CsvFileReader implements FileReader {
 
     @Resource
-    private TransactionEvaluatorService service;
+    private EvaluatorService service;
     @Resource
     private ConverterFactory converterFactory;
 
@@ -36,32 +36,32 @@ public class CsvFileReader implements FileReader {
         return fileType;
     }
 
-    public List<TransactionDto> read(String filename) throws FileNotFoundException {
+    public List<RecordEvaluated> read(String filename) throws FileNotFoundException {
         return read(Paths.get(filename));
     }
 
-    public List<TransactionDto> read(String filename, Locale locale) throws FileNotFoundException {
+    public List<RecordEvaluated> read(String filename, Locale locale) throws FileNotFoundException {
         return read(Paths.get(filename), locale);
     }
 
-    public List<TransactionDto> read(Path path) throws FileNotFoundException {
+    public List<RecordEvaluated> read(Path path) throws FileNotFoundException {
         return read(path, Locale.ROOT);
     }
 
-    public List<TransactionDto> read(Path path, Locale locale) throws FileNotFoundException {
+    public List<RecordEvaluated> read(Path path, Locale locale) throws FileNotFoundException {
         if (!Files.exists(path)) {
             throw new FileNotFoundException(String.format("File %s does not exist.", path));
         }
-        List<TransactionDto> transactionDtoList = new ArrayList<>();
+        List<RecordEvaluated> recordEvaluatedList = new ArrayList<>();
         try {
             String[] headers = getHeaders(path);
             log.debug("First Line: {}", Arrays.toString(headers));
-            extractFromFileToList(path, transactionDtoList, headers, locale);
+            extractFromFileToList(path, recordEvaluatedList, headers, locale);
         } catch (FieldsNotFoundException | IOException e) {
             log.error("Error reading file from path {}", path, e);
         }
-        transactionDtoList.forEach(recordDto -> log.info("Record {}", recordDto));
-        return transactionDtoList;
+        recordEvaluatedList.forEach(recordDto -> log.info("Record {}", recordDto));
+        return recordEvaluatedList;
     }
 
     private String[] getHeaders(Path path) throws FieldsNotFoundException, IOException {
@@ -73,7 +73,7 @@ public class CsvFileReader implements FileReader {
         }
     }
 
-    private void extractFromFileToList(Path path, List<TransactionDto> recordDtoList, String[] headers, Locale locale)
+    private void extractFromFileToList(Path path, List<RecordEvaluated> recordDtoList, String[] headers, Locale locale)
             throws IOException {
         try (Stream<String> fileContentStream = Files.lines(path)) {
             recordDtoList.addAll(fileContentStream
