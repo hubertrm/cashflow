@@ -1,13 +1,11 @@
 package be.hubertrm.cashflow.application.controller;
 
 import be.hubertrm.cashflow.CashflowBaseIntegrationTest;
+import be.hubertrm.cashflow.application.dto.*;
 import be.hubertrm.cashflow.domain.core.model.Account;
 import be.hubertrm.cashflow.domain.core.model.Category;
 import be.hubertrm.cashflow.domain.core.model.Transaction;
 import be.hubertrm.cashflow.domain.core.repository.TransactionRepository;
-import be.hubertrm.cashflow.application.dto.AccountDto;
-import be.hubertrm.cashflow.application.dto.CategoryDto;
-import be.hubertrm.cashflow.application.dto.TransactionDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
@@ -34,6 +32,8 @@ class TransactionControllerIT extends CashflowBaseIntegrationTest {
     private JacksonTester<TransactionDto> jsonTransaction;
     @Autowired
     private JacksonTester<List<TransactionDto>> jsonTransactionList;
+    @Autowired
+    private JacksonTester<List<RecordEvaluatedDto>> jsonRecordEvaluatedList;
     @Autowired
     private TransactionRepository repository;
 
@@ -196,13 +196,13 @@ class TransactionControllerIT extends CashflowBaseIntegrationTest {
     void given_stringToEvaluate_ifWellFormed_returnListOfDto() throws Exception {
         String headers = "Date,Price,Category,Account,Description";
         String toEvaluate = "31-12-2021,\"1,0 €\",name,name,description";
-        List<TransactionDto> expected = List.of(createTransactionDto(null));
+        List<RecordEvaluatedDto> expected = Collections.singletonList(createRecordEvaluatedDto());
 
         mvc.perform(post(TRANSACTIONS_PATH + "/evaluate")
                 .contentType(MediaType.TEXT_PLAIN)
                 .param("headers", headers)
                 .param("file", toEvaluate))
-                .andExpect(content().json(jsonTransactionList.write(expected).getJson()));
+                .andExpect(content().json(jsonRecordEvaluatedList.write(expected).getJson()));
     }
 
     private Transaction createTransaction(Long id) {
@@ -223,5 +223,14 @@ class TransactionControllerIT extends CashflowBaseIntegrationTest {
                 new CategoryDto(1L, "name", LocalDate.of(2021, 1, 1)),
                 new AccountDto(1L, "name", LocalDate.of(2021, 1, 1)),
                 "description");
+    }
+
+    private RecordEvaluatedDto createRecordEvaluatedDto() {
+        return new RecordEvaluatedDto()
+                .setDate(new EvaluationDto().setValue("2021-12-31"))
+                .setAmount(new EvaluationDto().setValue("1.0"))
+                .setCategory(new EvaluationDto().setValue("name"))
+                .setAccount(new EvaluationDto().setValue("name"))
+                .setDescription(new EvaluationDto().setValue("description"));
     }
 }

@@ -54,6 +54,7 @@ public class EvaluatorServiceImpl implements EvaluatorService {
                         recordEvaluated.setDate(mapDate(elements.get(i)));
                         break;
                     case PRICE:
+                    case AMOUNT:
                         recordEvaluated.setAmount(mapPrice(elements.get(i)));
                         break;
                     case CATEGORY:

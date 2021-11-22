@@ -3,6 +3,7 @@ package be.hubertrm.cashflow.domain.file.model;
 public enum RecordField {
     DATE("date"),
     PRICE("price"),
+    AMOUNT("amount"),
     CATEGORY("category"),
     ACCOUNT("account"),
     DESCRIPTION("description"),

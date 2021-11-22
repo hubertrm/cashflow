@@ -36,5 +36,5 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: maven
-      - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots verify
+      - name: Launch Integration tests
+        run: mvn -B failsafe:integration-test verify -Pintegration-tests
