@@ -32,6 +32,11 @@ public class CategoryBusinessManager {
         return categoryService.create(categoryMapper.toModel(categoryDto));
     }
 
+    public List<Long> createBulkCategories(List<CategoryDto> categoryDtoList) {
+        setDateIfNotSpecified(categoryDtoList);
+        return categoryService.createAll(categoryMapper.toModelList(categoryDtoList));
+    }
+
     public void updateCategory(Long id, CategoryDto categoryDto) throws ResourceNotFoundException {
         setDateIfNotSpecified(categoryDto);
         categoryService.update(id, categoryMapper.toModel(categoryDto));
@@ -45,5 +50,13 @@ public class CategoryBusinessManager {
         if(categoryDto.getDate() == null) {
             categoryDto.setDate(LocalDate.now());
         }
+    }
+
+    private void setDateIfNotSpecified(List<CategoryDto> categoryDtoList) {
+        categoryDtoList.forEach(categoryDto -> {
+            if (categoryDto.getDate() == null) {
+                categoryDto.setDate(LocalDate.now());
+            }
+        });
     }
 }
