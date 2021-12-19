@@ -37,7 +37,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public List<Long> save(List<Transaction> transactions) {
+    public List<Long> saveAll(List<Transaction> transactions) {
         return repository.saveAll(transactions.stream()
                         .map(TransactionEntity::from)
                         .collect(Collectors.toList()))

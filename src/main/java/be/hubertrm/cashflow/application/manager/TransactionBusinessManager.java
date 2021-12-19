@@ -48,7 +48,7 @@ public class TransactionBusinessManager {
         for (TransactionDto transactionDto : dtoList) {
             assertCategoryAndAccountExists(transactionDto);
         }
-        return transactionService.create(transactionMapper.toModelList(dtoList));
+        return transactionService.createAll(transactionMapper.toModelList(dtoList));
     }
 
     public void update(Long id, TransactionDto dto) throws ResourceNotFoundException {

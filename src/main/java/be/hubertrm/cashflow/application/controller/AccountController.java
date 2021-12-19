@@ -32,6 +32,11 @@ public class AccountController {
         return sourceBusinessManager.createAccount(sourceDto);
     }
 
+    @PostMapping("/bulk")
+    public List<Long> createBulkAccounts(@RequestBody List<AccountDto> sourceDtoList) {
+        return sourceBusinessManager.createBulkAccounts(sourceDtoList);
+    }
+
     @PutMapping("/{id}")
     public void updateAccount(@PathVariable(value = "id") Long accountId, @RequestBody AccountDto accountDto)
             throws ResourceNotFoundException {

@@ -32,6 +32,11 @@ public class CategoryController {
         return categoryBusinessManager.createCategory(categoryDto);
     }
 
+    @PostMapping("/bulk")
+    public List<Long> createBulkCategories(@RequestBody List<CategoryDto> categoryDtoList) {
+        return categoryBusinessManager.createBulkCategories(categoryDtoList);
+    }
+
     @PutMapping("/{id}")
     public void updateCategory(@PathVariable(value = "id") Long categoryId, @RequestBody CategoryDto categoryDto)
             throws ResourceNotFoundException {

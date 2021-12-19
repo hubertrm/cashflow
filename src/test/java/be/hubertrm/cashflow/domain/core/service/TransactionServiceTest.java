@@ -135,9 +135,9 @@ class TransactionServiceTest {
                     new Category(1L, "name", LocalDate.of(2021, 12, 31)),
                     new Account(1L, "name", LocalDate.of(2021, 12, 31)),
                     "description"));
-            doReturn(List.of(1L)).when(repository).save(actual);
+            doReturn(List.of(1L)).when(repository).saveAll(actual);
 
-            assertThat(service.create(actual)).isEqualTo(List.of(1L));
+            assertThat(service.createAll(actual)).isEqualTo(List.of(1L));
         }
 
         @ParameterizedTest
@@ -151,9 +151,9 @@ class TransactionServiceTest {
                     new Category(1L, "name", LocalDate.of(2021, 12, 31)),
                     new Account(1L, "name", LocalDate.of(2021, 12, 31)),
                     "description"));
-            doReturn(List.of(id)).when(repository).save(actual);
+            doReturn(List.of(id)).when(repository).saveAll(actual);
 
-            assertThat(service.create(actual)).isEqualTo(List.of(id));
+            assertThat(service.createAll(actual)).isEqualTo(List.of(id));
         }
     }
 

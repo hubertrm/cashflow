@@ -1,4 +1,4 @@
-[![Java CI with Maven](https://github.com/hubertrm/cashflow/actions/workflows/maven.yml/badge.svg?branch=master)](https://github.com/hubertrm/cashflow/actions/workflows/maven.yml)
+[![Java CI with Maven](https://github.com/hubertrm/cashflow/actions/workflows/maven.yml/badge.svg?branch=0.1.x_DAS-18_hubertrm)](https://github.com/hubertrm/cashflow/actions/workflows/maven.yml)
 
 # Cashflow
 
