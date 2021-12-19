@@ -42,6 +42,15 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
+    public List<Long> saveAll(List<Category> categoryList) {
+        return repository.saveAll(categoryList.stream()
+                .map(CategoryEntity::from)
+                .collect(Collectors.toList())).stream()
+                .map(CategoryEntity::getId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void update(Long categoryId, Category category) {
         category.setId(categoryId);
         save(category);

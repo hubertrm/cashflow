@@ -48,6 +48,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Long> createAll(List<Category> categoryList) {
+        return categoryRepository.saveAll(categoryList);
+    }
+
+    @Override
     public void update(Long categoryId, Category categoryDetails) throws ResourceNotFoundException {
         Category current = categoryRepository.findById(categoryId).orElseThrow(() ->
                 new ResourceNotFoundException(CATEGORY_NOT_FOUND_MESSAGE, categoryId));

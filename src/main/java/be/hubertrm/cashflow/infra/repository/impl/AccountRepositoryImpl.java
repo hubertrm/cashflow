@@ -42,6 +42,15 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
+    public List<Long> saveAll(List<Account> accountList) {
+        return repository.saveAll(accountList.stream()
+                .map(AccountEntity::from)
+                .collect(Collectors.toList())).stream()
+                .map(AccountEntity::getId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void update(Long accountId, Account account) {
         account.setId(accountId);
         save(account);
