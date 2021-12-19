@@ -1,9 +1,9 @@
 package be.hubertrm.cashflow.application.controller;
 
 import be.hubertrm.cashflow.CashflowBaseIntegrationTest;
+import be.hubertrm.cashflow.application.dto.CategoryDto;
 import be.hubertrm.cashflow.domain.core.model.Category;
 import be.hubertrm.cashflow.domain.core.repository.CategoryRepository;
-import be.hubertrm.cashflow.application.dto.CategoryDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
@@ -82,6 +82,18 @@ class CategoryControllerIT extends CashflowBaseIntegrationTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isNumber());
+    }
+
+    @Test
+    void given_entitiesToCreate_when_create_then_returnsEntitiesId() throws Exception {
+        List<CategoryDto> toCreate = List.of(new CategoryDto(null, "name", LocalDate.of(2021, 1, 1)));
+
+        mvc.perform(post(CATEGORIES_PATH + "/bulk")
+                        .content(jsonCategoryList.write(toCreate).getJson())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[0]").isNumber());
     }
 
     @Test

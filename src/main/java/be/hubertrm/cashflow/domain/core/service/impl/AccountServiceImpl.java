@@ -2,6 +2,7 @@ package be.hubertrm.cashflow.domain.core.service.impl;
 
 import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
 import be.hubertrm.cashflow.domain.core.model.Account;
+import be.hubertrm.cashflow.domain.core.model.Category;
 import be.hubertrm.cashflow.domain.core.repository.AccountRepository;
 import be.hubertrm.cashflow.domain.core.service.AccountService;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Long create(Account account) {
         return accountRepository.save(account);
+    }
+
+    @Override
+    public List<Long> createAll(List<Account> accountList) {
+        return accountRepository.saveAll(accountList);
     }
 
     @Override

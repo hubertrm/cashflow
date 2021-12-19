@@ -1,6 +1,7 @@
 package be.hubertrm.cashflow.application.controller;
 
 import be.hubertrm.cashflow.CashflowBaseIntegrationTest;
+import be.hubertrm.cashflow.application.dto.CategoryDto;
 import be.hubertrm.cashflow.domain.core.model.Account;
 import be.hubertrm.cashflow.domain.core.repository.AccountRepository;
 import be.hubertrm.cashflow.application.dto.AccountDto;
@@ -82,6 +83,18 @@ class AccountControllerIT extends CashflowBaseIntegrationTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isNumber());
+    }
+
+    @Test
+    void given_entitiesToCreate_when_create_then_returnsEntitiesId() throws Exception {
+        List<AccountDto> toCreate = List.of(new AccountDto(null, "name", LocalDate.of(2021, 1, 1)));
+
+        mvc.perform(post(ACCOUNTS_PATH + "/bulk")
+                        .content(jsonAccountList.write(toCreate).getJson())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[0]").isNumber());
     }
 
     @Test
