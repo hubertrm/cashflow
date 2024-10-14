@@ -32,6 +32,11 @@ public class AccountBusinessManager {
         return accountService.create(sourceMapper.toModel(accountDto));
     }
 
+    public List<Long> createBulkAccounts(List<AccountDto> accountDtoList) {
+        setDateIfNotSpecified(accountDtoList);
+        return accountService.createAll(sourceMapper.toModelList(accountDtoList));
+    }
+
     public void updateAccount(Long id, AccountDto accountDto) throws ResourceNotFoundException {
         setDateIfNotSpecified(accountDto);
         accountService.update(id, sourceMapper.toModel(accountDto));
@@ -45,5 +50,13 @@ public class AccountBusinessManager {
         if(accountDto.getDate() == null) {
             accountDto.setDate(LocalDate.now());
         }
+    }
+
+    private void setDateIfNotSpecified(List<AccountDto> accountDtoList) {
+        accountDtoList.forEach(accountDto -> {
+            if(accountDto.getDate() == null) {
+                accountDto.setDate(LocalDate.now());
+            }
+        });
     }
 }

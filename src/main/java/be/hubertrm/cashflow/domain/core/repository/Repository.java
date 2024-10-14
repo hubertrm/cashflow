@@ -11,6 +11,8 @@ public interface Repository<M> {
 
     Long save(M m);
 
+    List<Long> saveAll(List<M> m);
+
     void update(Long id, M m);
 
     void deleteById(Long id);

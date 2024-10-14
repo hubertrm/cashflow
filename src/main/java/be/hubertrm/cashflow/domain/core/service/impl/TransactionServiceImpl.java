@@ -43,8 +43,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Long> create(final List<Transaction> transactions) {
-        final var transactionIds = transactionRepository.save(transactions);
+    public List<Long> createAll(final List<Transaction> transactions) {
+        final var transactionIds = transactionRepository.saveAll(transactions);
 
         log.debug("Created transactions with ids [{}]", transactionIds);
         return transactionIds;

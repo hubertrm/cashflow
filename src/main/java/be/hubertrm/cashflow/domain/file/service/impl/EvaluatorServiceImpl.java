@@ -3,13 +3,13 @@ package be.hubertrm.cashflow.domain.file.service.impl;
 import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
 import be.hubertrm.cashflow.domain.core.service.AccountService;
 import be.hubertrm.cashflow.domain.core.service.CategoryService;
-import be.hubertrm.cashflow.domain.file.service.converter.Converter;
 import be.hubertrm.cashflow.domain.file.enums.DatePattern;
 import be.hubertrm.cashflow.domain.file.model.Error;
 import be.hubertrm.cashflow.domain.file.model.Evaluation;
 import be.hubertrm.cashflow.domain.file.model.RecordEvaluated;
 import be.hubertrm.cashflow.domain.file.model.RecordField;
 import be.hubertrm.cashflow.domain.file.service.EvaluatorService;
+import be.hubertrm.cashflow.domain.file.service.converter.Converter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -131,7 +131,7 @@ public class EvaluatorServiceImpl implements EvaluatorService {
         try {
             return new Evaluation().setValue(categoryService.getByName(categoryName).getName());
         } catch (ResourceNotFoundException e) {
-            Error error = new Error(FIELD_DOES_NOT_EXIST, "This field does not exists");
+            Error error = new Error(FIELD_DOES_NOT_EXIST, "This field does not exist");
             return new Evaluation().setValue(categoryName).setError(error);
         }
     }
@@ -140,7 +140,7 @@ public class EvaluatorServiceImpl implements EvaluatorService {
         try {
             return new Evaluation().setValue(accountService.getByName(sourceName).getName());
         } catch (ResourceNotFoundException e) {
-            Error error = new Error(FIELD_DOES_NOT_EXIST, "This field does not exists");
+            Error error = new Error(FIELD_DOES_NOT_EXIST, "This field does not exist");
             return new Evaluation().setValue(sourceName).setError(error);
         }
     }

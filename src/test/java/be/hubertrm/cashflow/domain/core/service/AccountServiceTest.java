@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -107,6 +108,19 @@ class AccountServiceTest {
             doReturn(1L).when(repository).save(actual);
 
             assertThat(service.create(actual)).isEqualTo(1L);
+        }
+
+        @Test
+        @DisplayName("Test create bulk Success")
+        void testCreateBulk() {
+            List<Account> actual = List.of(
+                    new Account(null, "name", LocalDate.of(2021, 12, 31)),
+                    new Account(null, "name 2", LocalDate.of(2021, 12, 31))
+            );
+            List<Long> expected = List.of(1L, 2L);
+            doReturn(expected).when(repository).saveAll(actual);
+
+            assertThat(service.createAll(actual)).isEqualTo(expected);
         }
 
         @ParameterizedTest

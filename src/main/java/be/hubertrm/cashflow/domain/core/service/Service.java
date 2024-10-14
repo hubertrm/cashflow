@@ -14,6 +14,8 @@ public interface Service<T> {
 
     Long create(T model);
 
+    List<Long> createAll(List<T> modelList);
+
     void update(Long id, T model) throws ResourceNotFoundException;
 
     void deleteById(Long id) throws ResourceNotFoundException;
