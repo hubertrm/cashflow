@@ -68,4 +68,9 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ResourceNotFoundException(CATEGORY_NOT_FOUND_MESSAGE, categoryId);
         }
     }
+
+    @Override
+    public Optional<Category> findByName(String name) {
+        return categoryRepository.findByName(name);
+    }
 }

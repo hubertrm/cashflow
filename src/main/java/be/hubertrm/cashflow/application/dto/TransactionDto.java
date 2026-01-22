@@ -19,5 +19,15 @@ public class TransactionDto {
     private CategoryDto category;
     private AccountDto account;
     private String description;
+    private Integer weekNumber;
+    private String holiday;
+    private String month;
+    private String ticker;
+    private Integer nbrOfActions;
+    private Float changeRate;
+    private Boolean isCommon;
+    private Float beforeConversion;
+    private String currency;
+    private Integer year;
 
 }

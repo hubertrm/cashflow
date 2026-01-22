@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,5 +68,10 @@ public class TransactionServiceImpl implements TransactionService {
         } else {
             throw new ResourceNotFoundException(TRANSACTION_NOT_FOUND_MESSAGE, id);
         }
+    }
+
+    @Override
+    public Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId) {
+        return transactionRepository.findDuplicate(date, amount, categoryId, accountId);
     }
 }
