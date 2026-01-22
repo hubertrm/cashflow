@@ -7,6 +7,7 @@ import be.hubertrm.cashflow.infra.repository.JpaTransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,5 +55,11 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     @Override
     public void deleteById(Long transactionId) {
         repository.deleteById(transactionId);
+    }
+
+    @Override
+    public Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId) {
+        return repository.findDuplicate(date, amount, categoryId, accountId)
+                .map(TransactionEntity::fromThis);
     }
 }

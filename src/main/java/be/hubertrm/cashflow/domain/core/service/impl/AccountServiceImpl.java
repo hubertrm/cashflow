@@ -66,4 +66,9 @@ public class AccountServiceImpl implements AccountService {
             throw new ResourceNotFoundException(ACCOUNT_NOT_FOUND_MESSAGE, accountId);
         }
     }
+
+    @Override
+    public Optional<Account> findByName(String name) {
+        return accountRepository.findByName(name);
+    }
 }
