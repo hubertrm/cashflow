@@ -2,7 +2,11 @@ HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
+src/main/resources/client_secret_private.json
+src/main/resources/cashflow-438618-42013d3be78c.json
 !**/src/test/**/target/
+src/test/resources/client_secret_private.json
+src/test/resources/cashflow-438618-42013d3be78c.json
 
 ### STS ###
 .apt_generated
