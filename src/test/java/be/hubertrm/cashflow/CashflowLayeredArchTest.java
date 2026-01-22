@@ -9,12 +9,13 @@ import com.tngtech.archunit.lang.ArchRule;
 
 import static com.tngtech.archunit.core.domain.properties.HasModifiers.Predicates.modifier;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
-import static com.tngtech.archunit.library.Architectures.onionArchitecture;
 
 @AnalyzeClasses(packages = "be.hubertrm.cashflow", importOptions = {ImportOption.DoNotIncludeTests.class })
 public class CashflowLayeredArchTest {
     @ArchTest
     private final ArchRule layer_dependencies_are_respected_with_exception = layeredArchitecture()
+            .consideringOnlyDependenciesInLayers()
+            .layer("Application").definedBy("..application..")
             .layer("Controllers").definedBy("..controller..")
             .layer("Managers").definedBy("..manager..")
             .layer("Mappers").definedBy("..mapper..")
