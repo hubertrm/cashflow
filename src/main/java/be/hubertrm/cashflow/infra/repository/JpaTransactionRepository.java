@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface JpaTransactionRepository extends JpaRepository<TransactionEntity, Long> {
 
     @Query("SELECT t FROM TransactionEntity t WHERE t.date = ?1 AND t.amount = ?2 " +
-           "AND t.category.id = ?3 AND t.account.id = ?4")
-    Optional<TransactionEntity> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId);
+           "AND t.category.id = ?3 AND t.account.id = ?4 AND (t.description = ?5 OR (t.description IS NULL AND ?5 IS NULL))")
+    Optional<TransactionEntity> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId, String description);
 }

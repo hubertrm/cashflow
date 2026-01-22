@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface TransactionRepository extends Repository<Transaction> {
 
-    Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId);
+    Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId, String description);
 }
