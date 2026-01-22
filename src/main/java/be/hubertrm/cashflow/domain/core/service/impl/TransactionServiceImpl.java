@@ -71,7 +71,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId) {
-        return transactionRepository.findDuplicate(date, amount, categoryId, accountId);
+    public Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId, String description) {
+        return transactionRepository.findDuplicate(date, amount, categoryId, accountId, description);
     }
 }

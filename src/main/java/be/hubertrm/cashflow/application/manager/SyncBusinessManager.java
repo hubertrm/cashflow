@@ -65,7 +65,8 @@ public class SyncBusinessManager {
                         transaction.getDate(),
                         transaction.getAmount(),
                         transaction.getCategory().getId(),
-                        transaction.getAccount().getId()
+                        transaction.getAccount().getId(),
+                        transaction.getDescription()
                 );
 
                 if (duplicate.isPresent()) {
@@ -120,6 +121,7 @@ public class SyncBusinessManager {
                     accountName = cellValue.toString().trim();
                     break;
                 case "comment":
+                case "description":
                     transaction.setDescription(cellValue.toString());
                     break;
                 case "weeknumber":
