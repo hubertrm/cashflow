@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface TransactionService extends Service<Transaction> {
 
-    Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId, String description);
+    Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId, String description, Long reference);
 }

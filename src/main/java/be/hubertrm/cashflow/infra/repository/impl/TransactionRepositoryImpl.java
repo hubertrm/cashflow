@@ -5,6 +5,8 @@ import be.hubertrm.cashflow.domain.core.repository.TransactionRepository;
 import be.hubertrm.cashflow.infra.entity.TransactionEntity;
 import be.hubertrm.cashflow.infra.repository.JpaTransactionRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -33,6 +35,11 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
+    public Page<Transaction> getAll(Pageable pageable) {
+        return repository.findAll(pageable).map(TransactionEntity::fromThis);
+    }
+
+    @Override
     public Long save(Transaction transaction) {
         return repository.save(TransactionEntity.from(transaction)).getId();
     }
@@ -58,8 +65,8 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId, String description) {
-        return repository.findDuplicate(date, amount, categoryId, accountId, description)
+    public Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId, String description, Long reference) {
+        return repository.findDuplicate(date, amount, categoryId, accountId, description, reference)
                 .map(TransactionEntity::fromThis);
     }
 }

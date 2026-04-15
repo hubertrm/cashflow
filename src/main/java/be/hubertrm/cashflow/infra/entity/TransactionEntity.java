@@ -66,6 +66,9 @@ public class TransactionEntity {
     @Column(name = "year")
     private Integer year;
 
+    @Column(name = "reference")
+    private Long reference;
+
     public static TransactionEntity from(Transaction transaction) {
         TransactionEntity entity = new TransactionEntity();
         entity.setId(transaction.getId());
@@ -93,7 +96,7 @@ public class TransactionEntity {
                 category != null ? category.fromThis() : null,
                 account != null ? account.fromThis() : null,
                 description, weekNumber, holiday, month, ticker,
-                nbrOfActions, changeRate, isCommon, beforeConversion, currency, year
+                nbrOfActions, changeRate, isCommon, beforeConversion, currency, year, reference
         );
     }
 }

@@ -5,6 +5,8 @@ import be.hubertrm.cashflow.domain.core.repository.AccountRepository;
 import be.hubertrm.cashflow.infra.entity.AccountEntity;
 import be.hubertrm.cashflow.infra.repository.JpaAccountRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,6 +36,11 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public List<Account> getAll() {
         return repository.findAll().stream().map(AccountEntity::fromThis).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<Account> getAll(Pageable pageable) {
+        return repository.findAll(pageable).map(AccountEntity::fromThis);
     }
 
     @Override

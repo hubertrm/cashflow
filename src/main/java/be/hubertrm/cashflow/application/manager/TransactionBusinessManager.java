@@ -1,15 +1,17 @@
 package be.hubertrm.cashflow.application.manager;
 
+import be.hubertrm.cashflow.application.dto.RecordEvaluatedDto;
+import be.hubertrm.cashflow.application.dto.TransactionDto;
+import be.hubertrm.cashflow.application.mapper.RecordEvaluatedMapper;
+import be.hubertrm.cashflow.application.mapper.TransactionMapper;
 import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
 import be.hubertrm.cashflow.domain.core.service.AccountService;
 import be.hubertrm.cashflow.domain.core.service.CategoryService;
 import be.hubertrm.cashflow.domain.core.service.TransactionService;
 import be.hubertrm.cashflow.domain.file.service.reader.CsvReader;
-import be.hubertrm.cashflow.application.dto.RecordEvaluatedDto;
-import be.hubertrm.cashflow.application.dto.TransactionDto;
-import be.hubertrm.cashflow.application.mapper.RecordEvaluatedMapper;
-import be.hubertrm.cashflow.application.mapper.TransactionMapper;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -33,6 +35,10 @@ public class TransactionBusinessManager {
 
     public List<TransactionDto> getAll() {
         return transactionMapper.toDtoList(transactionService.getAll());
+    }
+
+    public Page<TransactionDto> getAll(Pageable pageable) {
+        return transactionService.getAll(pageable).map(transactionMapper::toDto);
     }
 
     public TransactionDto getById(Long id) throws ResourceNotFoundException {
