@@ -29,5 +29,6 @@ public class TransactionDto {
     private Float beforeConversion;
     private String currency;
     private Integer year;
+    private Integer reference;
 
 }

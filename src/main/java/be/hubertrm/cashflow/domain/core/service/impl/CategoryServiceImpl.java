@@ -1,11 +1,12 @@
 package be.hubertrm.cashflow.domain.core.service.impl;
 
 import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
-import be.hubertrm.cashflow.domain.core.model.Account;
 import be.hubertrm.cashflow.domain.core.model.Category;
 import be.hubertrm.cashflow.domain.core.repository.CategoryRepository;
 import be.hubertrm.cashflow.domain.core.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,6 +29,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getAll() {
         return categoryRepository.getAll();
+    }
+
+    @Override
+    public Page<Category> getAll(Pageable pageable) {
+        return categoryRepository.getAll(pageable);
     }
 
     @Override

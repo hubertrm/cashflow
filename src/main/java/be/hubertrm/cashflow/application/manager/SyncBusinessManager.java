@@ -66,7 +66,8 @@ public class SyncBusinessManager {
                         transaction.getAmount(),
                         transaction.getCategory().getId(),
                         transaction.getAccount().getId(),
-                        transaction.getDescription()
+                        transaction.getDescription(),
+                        transaction.getReference()
                 );
 
                 if (duplicate.isPresent()) {
@@ -154,6 +155,9 @@ public class SyncBusinessManager {
                 case "year":
                     transaction.setYear(parseInteger(cellValue));
                     break;
+                case "reference":
+                    transaction.setReference(parseLong(cellValue));
+                    break;
                 default:
                     log.trace("Unknown header: {}", headerName);
             }
@@ -195,6 +199,17 @@ public class SyncBusinessManager {
         }
         try {
             return Integer.parseInt(value.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private Long parseLong(Object value) {
+        if (value instanceof Number) {
+            return ((Number) value).longValue();
+        }
+        try {
+            return Long.parseLong(value.toString());
         } catch (NumberFormatException e) {
             return null;
         }

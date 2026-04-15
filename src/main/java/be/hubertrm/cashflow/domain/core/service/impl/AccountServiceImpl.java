@@ -2,9 +2,10 @@ package be.hubertrm.cashflow.domain.core.service.impl;
 
 import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
 import be.hubertrm.cashflow.domain.core.model.Account;
-import be.hubertrm.cashflow.domain.core.model.Category;
 import be.hubertrm.cashflow.domain.core.repository.AccountRepository;
 import be.hubertrm.cashflow.domain.core.service.AccountService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,6 +27,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<Account> getAll() {
         return accountRepository.getAll();
+    }
+
+    @Override
+    public Page<Account> getAll(Pageable pageable) {
+        return accountRepository.getAll(pageable);
     }
 
     @Override

@@ -29,5 +29,6 @@ public class Transaction {
     private Float beforeConversion;
     private String currency;
     private Integer year;
+    private Long reference;
 
 }

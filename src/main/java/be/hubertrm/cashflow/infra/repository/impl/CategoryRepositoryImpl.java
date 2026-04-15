@@ -5,6 +5,8 @@ import be.hubertrm.cashflow.domain.core.repository.CategoryRepository;
 import be.hubertrm.cashflow.infra.entity.CategoryEntity;
 import be.hubertrm.cashflow.infra.repository.JpaCategoryRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,6 +36,11 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     @Override
     public List<Category> getAll() {
         return repository.findAll().stream().map(CategoryEntity::fromThis).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<Category> getAll(Pageable pageable) {
+        return repository.findAll(pageable).map(CategoryEntity::fromThis);
     }
 
     @Override

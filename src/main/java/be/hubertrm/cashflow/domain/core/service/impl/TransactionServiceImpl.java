@@ -5,6 +5,8 @@ import be.hubertrm.cashflow.domain.core.model.Transaction;
 import be.hubertrm.cashflow.domain.core.repository.TransactionRepository;
 import be.hubertrm.cashflow.domain.core.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +29,11 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Transaction> getAll() {
         return transactionRepository.getAll();
+    }
+
+    @Override
+    public Page<Transaction> getAll(Pageable pageable) {
+        return transactionRepository.getAll(pageable);
     }
 
     @Override
@@ -71,7 +78,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId, String description) {
-        return transactionRepository.findDuplicate(date, amount, categoryId, accountId, description);
+    public Optional<Transaction> findDuplicate(LocalDate date, Float amount, Long categoryId, Long accountId, String description, Long reference) {
+        return transactionRepository.findDuplicate(date, amount, categoryId, accountId, description, reference);
     }
 }
