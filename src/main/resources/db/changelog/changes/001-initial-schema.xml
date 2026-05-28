@@ -3,9 +3,12 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
     <changeSet id="001-create-account" author="hubertrm">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="account"/></not>
+        </preConditions>
         <createTable tableName="account">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -20,6 +23,9 @@
     </changeSet>
 
     <changeSet id="002-create-category" author="hubertrm">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="category"/></not>
+        </preConditions>
         <createTable tableName="category">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -34,6 +40,9 @@
     </changeSet>
 
     <changeSet id="003-create-transaction" author="hubertrm">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="transaction"/></not>
+        </preConditions>
         <createTable tableName="transaction">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
