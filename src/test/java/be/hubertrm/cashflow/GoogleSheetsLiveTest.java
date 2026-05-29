@@ -3,6 +3,7 @@ package be.hubertrm.cashflow;
 import be.hubertrm.cashflow.interfaces.client.SheetsClient;
 import com.google.api.services.sheets.v4.model.BatchGetValuesResponse;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
+@Disabled
 @SpringBootTest
 public class GoogleSheetsLiveTest {
 
