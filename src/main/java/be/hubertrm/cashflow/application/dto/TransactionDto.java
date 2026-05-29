@@ -31,4 +31,12 @@ public class TransactionDto {
     private Integer year;
     private Integer reference;
 
+    public TransactionDto(Long id, LocalDate date, float amount, CategoryDto category, AccountDto account, String description) {
+        this.id = id;
+        this.date = date;
+        this.amount = amount;
+        this.category = category;
+        this.account = account;
+        this.description = description;
+    }
 }

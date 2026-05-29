@@ -31,4 +31,12 @@ public class Transaction {
     private Integer year;
     private Long reference;
 
+    public Transaction(Long id, LocalDate date, float amount, Category category, Account account, String description) {
+        this.id = id;
+        this.date = date;
+        this.amount = amount;
+        this.category = category;
+        this.account = account;
+        this.description = description;
+    }
 }
