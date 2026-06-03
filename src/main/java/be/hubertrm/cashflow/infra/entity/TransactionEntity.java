@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -69,6 +71,11 @@ public class TransactionEntity {
     @Column(name = "reference")
     private Long reference;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "transaction_tags", joinColumns = @JoinColumn(name = "transaction_id"))
+    @Column(name = "tag")
+    private List<String> tags = new ArrayList<>();
+
     public static TransactionEntity from(Transaction transaction) {
         TransactionEntity entity = new TransactionEntity();
         entity.setId(transaction.getId());
@@ -87,6 +94,7 @@ public class TransactionEntity {
         entity.setBeforeConversion(transaction.getBeforeConversion());
         entity.setCurrency(transaction.getCurrency());
         entity.setYear(transaction.getYear());
+        entity.setTags(transaction.getTags() != null ? new ArrayList<>(transaction.getTags()) : new ArrayList<>());
         return entity;
     }
 
@@ -96,7 +104,8 @@ public class TransactionEntity {
                 category != null ? category.fromThis() : null,
                 account != null ? account.fromThis() : null,
                 description, weekNumber, holiday, month, ticker,
-                nbrOfActions, changeRate, isCommon, beforeConversion, currency, year, reference
+                nbrOfActions, changeRate, isCommon, beforeConversion, currency, year, reference,
+                tags != null ? new ArrayList<>(tags) : new ArrayList<>()
         );
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="004-create-transaction-tags" author="hubertrm">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="transaction_tags"/></not>
+        </preConditions>
+        <createTable tableName="transaction_tags">
+            <column name="transaction_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tag" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="fk_transaction_tags_transaction"
+                baseTableName="transaction_tags"
+                baseColumnNames="transaction_id"
+                referencedTableName="transaction"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

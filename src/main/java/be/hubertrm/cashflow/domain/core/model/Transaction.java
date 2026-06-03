@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -30,6 +31,7 @@ public class Transaction {
     private String currency;
     private Integer year;
     private Long reference;
+    private List<String> tags;
 
     public Transaction(Long id, LocalDate date, float amount, Category category, Account account, String description) {
         this.id = id;
