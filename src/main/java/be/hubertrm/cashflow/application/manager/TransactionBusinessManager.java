@@ -14,20 +14,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Locale;
 
 @Component
 public class TransactionBusinessManager {
 
-    @Resource
+    @jakarta.annotation.Resource
     private TransactionService transactionService;
     @Resource
     private CategoryService categoryService;
     @Resource
     private AccountService accountService;
-    @Resource
+    @jakarta.annotation.Resource
     private CsvReader csvReader;
 
     private final TransactionMapper transactionMapper = Mappers.getMapper(TransactionMapper.class);

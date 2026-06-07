@@ -10,10 +10,10 @@ import be.hubertrm.cashflow.domain.file.model.RecordEvaluated;
 import be.hubertrm.cashflow.domain.file.model.RecordField;
 import be.hubertrm.cashflow.domain.file.service.EvaluatorService;
 import be.hubertrm.cashflow.domain.file.service.converter.Converter;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -29,12 +29,12 @@ public class EvaluatorServiceImpl implements EvaluatorService {
 
     private DateTimeFormatter dateTimeFormatter;
 
-    @Resource
+    @jakarta.annotation.Resource
     public CategoryService categoryService;
     @Resource
     public AccountService accountService;
 
-    @Resource
+    @jakarta.annotation.Resource
     Converter<String, List<String>> converter;
 
     @Override

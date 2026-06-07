@@ -3,7 +3,7 @@ package be.hubertrm.cashflow.infra.entity;
 import be.hubertrm.cashflow.domain.core.model.Account;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Getter

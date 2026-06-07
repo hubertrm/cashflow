@@ -7,7 +7,7 @@ import be.hubertrm.cashflow.application.mapper.CategoryMapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
 

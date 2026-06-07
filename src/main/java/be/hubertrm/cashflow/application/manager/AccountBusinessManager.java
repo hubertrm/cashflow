@@ -4,10 +4,10 @@ import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
 import be.hubertrm.cashflow.domain.core.service.AccountService;
 import be.hubertrm.cashflow.application.dto.AccountDto;
 import be.hubertrm.cashflow.application.mapper.AccountMapper;
+import jakarta.annotation.Resource;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
 

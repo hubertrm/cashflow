@@ -4,11 +4,11 @@ import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
 import be.hubertrm.cashflow.domain.core.model.Account;
 import be.hubertrm.cashflow.domain.core.repository.AccountRepository;
 import be.hubertrm.cashflow.domain.core.service.AccountService;
+import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 

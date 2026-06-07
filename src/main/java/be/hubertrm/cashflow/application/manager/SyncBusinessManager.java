@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -125,9 +125,6 @@ public class SyncBusinessManager {
                 case "description":
                     transaction.setDescription(cellValue.toString());
                     break;
-                case "weeknumber":
-                    transaction.setWeekNumber(parseInteger(cellValue));
-                    break;
                 case "holiday":
                     transaction.setHoliday(cellValue.toString());
                     break;
@@ -151,9 +148,6 @@ public class SyncBusinessManager {
                     break;
                 case "currency":
                     transaction.setCurrency(cellValue.toString());
-                    break;
-                case "year":
-                    transaction.setYear(parseInteger(cellValue));
                     break;
                 case "reference":
                     transaction.setReference(parseLong(cellValue));

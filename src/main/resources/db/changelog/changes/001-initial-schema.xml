@@ -61,11 +61,9 @@
             <column name="currency" type="varchar(255)"/>
             <column name="holiday" type="varchar(255)"/>
             <column name="is_common" type="boolean"/>
-            <column name="month" type="varchar(255)"/>
+            <column name="month_period" type="varchar(255)"/>
             <column name="nbr_of_actions" type="integer"/>
             <column name="ticker" type="varchar(255)"/>
-            <column name="week_number" type="integer"/>
-            <column name="year" type="integer"/>
             <column name="reference" type="bigint"/>
         </createTable>
 

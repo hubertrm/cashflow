@@ -4,7 +4,7 @@ import be.hubertrm.cashflow.domain.sheets.entity.RangeOptions;
 import be.hubertrm.cashflow.interfaces.service.GoogleRequestInitializer;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class SheetsClient {
 
         return new Sheets.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(),
-                new JacksonFactory(),
+                new GsonFactory(),
                 credential)
                 .setApplicationName(APPLICATION_NAME)
                 .build();

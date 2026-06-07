@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,7 +21,6 @@ public class Transaction {
     private Category category;
     private Account account;
     private String description;
-    private Integer weekNumber;
     private String holiday;
     private String month;
     private String ticker;
@@ -29,9 +29,8 @@ public class Transaction {
     private Boolean isCommon;
     private Float beforeConversion;
     private String currency;
-    private Integer year;
     private Long reference;
-    private List<String> tags;
+    private List<String> tags = new ArrayList<>();
 
     public Transaction(Long id, LocalDate date, float amount, Category category, Account account, String description) {
         this.id = id;

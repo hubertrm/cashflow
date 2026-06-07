@@ -5,7 +5,7 @@ import be.hubertrm.cashflow.application.dto.AccountDto;
 import be.hubertrm.cashflow.application.manager.AccountBusinessManager;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 
 @RestController

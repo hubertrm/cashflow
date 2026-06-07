@@ -3,7 +3,7 @@ package be.hubertrm.cashflow.infra.entity;
 import be.hubertrm.cashflow.domain.core.model.Transaction;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +38,10 @@ public class TransactionEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "week_number")
-    private Integer weekNumber;
-
     @Column(name = "holiday")
     private String holiday;
 
-    @Column(name = "month")
+    @Column(name = "month_period")
     private String month;
 
     @Column(name = "ticker")
@@ -65,9 +62,6 @@ public class TransactionEntity {
     @Column(name = "currency")
     private String currency;
 
-    @Column(name = "year")
-    private Integer year;
-
     @Column(name = "reference")
     private Long reference;
 
@@ -84,7 +78,6 @@ public class TransactionEntity {
         entity.setCategory(transaction.getCategory() != null ? CategoryEntity.from(transaction.getCategory()) : null);
         entity.setAccount(transaction.getAccount() != null ? AccountEntity.from(transaction.getAccount()) : null);
         entity.setDescription(transaction.getDescription());
-        entity.setWeekNumber(transaction.getWeekNumber());
         entity.setHoliday(transaction.getHoliday());
         entity.setMonth(transaction.getMonth());
         entity.setTicker(transaction.getTicker());
@@ -93,7 +86,6 @@ public class TransactionEntity {
         entity.setIsCommon(transaction.getIsCommon());
         entity.setBeforeConversion(transaction.getBeforeConversion());
         entity.setCurrency(transaction.getCurrency());
-        entity.setYear(transaction.getYear());
         entity.setTags(transaction.getTags() != null ? new ArrayList<>(transaction.getTags()) : new ArrayList<>());
         return entity;
     }
@@ -103,8 +95,8 @@ public class TransactionEntity {
                 id, date, amount,
                 category != null ? category.fromThis() : null,
                 account != null ? account.fromThis() : null,
-                description, weekNumber, holiday, month, ticker,
-                nbrOfActions, changeRate, isCommon, beforeConversion, currency, year, reference,
+                description, holiday, month, ticker,
+                nbrOfActions, changeRate, isCommon, beforeConversion, currency, reference,
                 tags != null ? new ArrayList<>(tags) : new ArrayList<>()
         );
     }

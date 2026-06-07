@@ -7,7 +7,7 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -37,10 +37,10 @@ public class OAuthRequestInitializer implements GoogleRequestInitializer {
 
             List<String> scopes = List.of(SheetsScopes.SPREADSHEETS);
 
-            GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(new JacksonFactory(), new InputStreamReader(in));
+            GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(new GsonFactory(), new InputStreamReader(in));
 
             GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                    GoogleNetHttpTransport.newTrustedTransport(), new JacksonFactory(), clientSecrets, scopes
+                    GoogleNetHttpTransport.newTrustedTransport(), new GsonFactory(), clientSecrets, scopes
             ).setAccessType("offline")
                     .build();
             LocalServerReceiver receiver = new LocalServerReceiver.Builder()

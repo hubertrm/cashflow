@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDate;
 import java.util.Locale;
@@ -26,9 +26,9 @@ import static org.mockito.BDDMockito.given;
 @SpringBootTest
 class EvaluatorServiceTest {
 
-    @MockBean
+    @MockitoBean
     private CategoryService categoryService;
-    @MockBean
+    @MockitoBean
     private AccountService accountService;
 
     @InjectMocks

@@ -9,8 +9,10 @@ import be.hubertrm.cashflow.domain.core.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -31,6 +33,8 @@ class TransactionControllerIT extends CashflowBaseIntegrationTest {
     @Autowired
     private JacksonTester<TransactionDto> jsonTransaction;
     @Autowired
+    private JacksonTester<PagedModel<TransactionDto>> jsonTransactionPageModel;
+    @Autowired
     private JacksonTester<List<TransactionDto>> jsonTransactionList;
     @Autowired
     private JacksonTester<List<RecordEvaluatedDto>> jsonRecordEvaluatedList;
@@ -39,25 +43,28 @@ class TransactionControllerIT extends CashflowBaseIntegrationTest {
 
     @Test
     void given_noEntityExists_when_getAll_then_emptyList() throws Exception {
+        var empty = new PagedModel<>(new PageImpl<TransactionDto>(
+                List.of(),
+                PageRequest.of(0, 20),
+                0
+        ));
         mvc.perform(get(TRANSACTIONS_PATH))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(jsonTransactionList.write(Collections.emptyList()).getJson()));
+                .andExpect(content().json(jsonTransactionPageModel.write(empty).getJson()));
     }
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             scripts = "classpath:integrationTest/createAll.sql")
     void given_multipleEntitiesExist_when_getAll_then_returnsAll() throws Exception {
-        TransactionDto expected = createTransactionDto(1L);
+        var page = new PageImpl<>(List.of(createTransactionDto(1L)), PageRequest.of(0, 20), 1);
+        var expected = new PagedModel<>(page);
 
-        MockHttpServletResponse response = mvc.perform(get(TRANSACTIONS_PATH))
+        mvc.perform(get(TRANSACTIONS_PATH))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
-
-        assertThat(jsonTransactionList.parse(response.getContentAsString()).getObject())
-                .usingElementComparatorIgnoringFields("id").contains(expected);
+                .andExpect(content().json(jsonTransactionPageModel.write(expected).getJson()));
     }
 
     @Test
@@ -199,9 +206,9 @@ class TransactionControllerIT extends CashflowBaseIntegrationTest {
         List<RecordEvaluatedDto> expected = Collections.singletonList(createRecordEvaluatedDto());
 
         mvc.perform(post(TRANSACTIONS_PATH + "/evaluate")
-                .contentType(MediaType.TEXT_PLAIN)
-                .param("headers", headers)
-                .param("file", toEvaluate))
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .param("headers", headers)
+                        .param("file", toEvaluate))
                 .andExpect(content().json(jsonRecordEvaluatedList.write(expected).getJson()));
     }
 

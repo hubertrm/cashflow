@@ -4,11 +4,10 @@ import be.hubertrm.cashflow.application.dto.RangeDto;
 import be.hubertrm.cashflow.application.mapper.RangeMapper;
 import be.hubertrm.cashflow.domain.sheets.entity.RangeOptions;
 import be.hubertrm.cashflow.domain.sheets.service.SheetsService;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")

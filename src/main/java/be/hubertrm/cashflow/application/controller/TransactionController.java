@@ -4,12 +4,12 @@ import be.hubertrm.cashflow.application.dto.RecordEvaluatedDto;
 import be.hubertrm.cashflow.application.dto.TransactionDto;
 import be.hubertrm.cashflow.application.manager.TransactionBusinessManager;
 import be.hubertrm.cashflow.domain.core.exception.ResourceNotFoundException;
-import org.springframework.data.domain.Page;
+import jakarta.annotation.Resource;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
@@ -21,8 +21,8 @@ public class TransactionController {
     private TransactionBusinessManager transactionBusinessManager;
 
     @GetMapping("")
-    public Page<TransactionDto> getAllTransactions(Pageable pageable) {
-        return transactionBusinessManager.getAll(pageable);
+    public PagedModel<TransactionDto> getAllTransactions(Pageable pageable) {
+        return new PagedModel<>(transactionBusinessManager.getAll(pageable));
     }
 
     @GetMapping("/{id}")

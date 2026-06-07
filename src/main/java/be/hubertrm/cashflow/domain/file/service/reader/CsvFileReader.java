@@ -11,7 +11,7 @@ import be.hubertrm.cashflow.domain.file.service.EvaluatorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,7 +26,7 @@ public class CsvFileReader implements FileReader {
 
     @Resource
     private EvaluatorService service;
-    @Resource
+    @jakarta.annotation.Resource
     private ConverterFactory converterFactory;
 
     private static final FileType fileType = FileType.CSV;
