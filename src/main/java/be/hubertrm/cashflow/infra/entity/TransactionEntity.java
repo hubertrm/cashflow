@@ -86,6 +86,7 @@ public class TransactionEntity {
         entity.setIsCommon(transaction.getIsCommon());
         entity.setBeforeConversion(transaction.getBeforeConversion());
         entity.setCurrency(transaction.getCurrency());
+        entity.setReference(transaction.getReference());
         entity.setTags(transaction.getTags() != null ? new ArrayList<>(transaction.getTags()) : new ArrayList<>());
         return entity;
     }
